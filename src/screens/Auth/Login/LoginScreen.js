@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TextInput, Button, ActivityIndicator, KeyboardA
 import React, {useState} from 'react'
 import { FIREBASE_AUTH } from '../../../firebase/FirebaseConfig';
 import { async } from '@firebase/util';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = () => {
     const [email,setEmail] = useState('');
@@ -15,6 +15,11 @@ const signIn = async () => {
     try {
         const response = await signInWithEmailAndPassword(auth,email,password);
         console.log(response);
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                navigation.navigate('Inside');
+            }
+        })
     } catch(error) {
         console.log(error)
         alert('Sign in failed: ' + error.message);
