@@ -6,6 +6,8 @@ import LoginScreen from './src/screens/Auth/Login/LoginScreen';
 import Menu from './src/screens/MainMenu/Menu';
 import AddClubScreen from './src/screens/Club/AddClubScreen'
 import AddFloorScreen from './src/screens/Club/AddFloorScreen';
+import MyClubScreen from './src/screens/Club/MyClubScreen';
+import EditClubScreen from './src/screens/Club/EditClub';
 
 import {User, onAuthStateChanged} from 'firebase/auth';
 import { FIREBASE_AUTH } from './src/firebase/FirebaseConfig';
@@ -22,7 +24,11 @@ function InsideLayout() {
     <InsideStack.Navigator>
       <InsideStack.Screen name="Menu" component={Menu} />
       <InsideStack.Screen name="AddClub" component={AddClubScreen} />
-      <InsideStack.Screen name="AddFloor" component={AddFloorScreen} />
+      <InsideStack.Screen name="AddFloor" component={AddFloorScreen} options={{ headerShown: false }}/>
+      <InsideStack.Screen name="MyClub" component={MyClubScreen} />
+      <InsideStack.Screen name="EditClub" component={EditClubScreen} />
+
+
     </InsideStack.Navigator>
   );
 }

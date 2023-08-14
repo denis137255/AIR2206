@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TextInput, Button, ActivityIndicator, KeyboardA
 import React, {useState} from 'react'
 import { FIREBASE_AUTH } from '../../../firebase/FirebaseConfig';
 import { async } from '@firebase/util';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import {onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginScreen = () => {
     const [email,setEmail] = useState('');
