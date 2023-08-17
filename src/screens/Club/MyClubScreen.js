@@ -1,8 +1,22 @@
 import React from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
 
 const MyClubScreen = ({ route, navigation }) => {
   const { clubInfo } = route.params;
+
+  const handleDeleteClub = async () => {
+    try {
+      const clubDocRef = doc(FIRESTORE_INSTANCE, 'clubs', clubInfo.id);
+      await deleteDoc(clubDocRef);
+      Alert.alert('Success', 'Club deleted successfully');
+      navigation.goBack(); // Go back to the previous screen
+    } catch (error) {
+      console.error('Error deleting club:', error);
+      Alert.alert('Error', 'An error occurred while deleting the club');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -19,6 +33,7 @@ const MyClubScreen = ({ route, navigation }) => {
       {/* Add more fields for other club information */}
       
       <Button title="Edit" onPress={() => navigation.navigate('EditClub', { clubInfo })} />
+      <Button title="Delete" onPress={handleDeleteClub} color="red" />
     </View>
   );
 };
