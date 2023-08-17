@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { View, Button, TextInput, StyleSheet } from 'react-native';
-import StyleUtils, { SPACING_MEDIUM, CENTERED_CONTAINER, BUTTON_CONTAINER,BUTTON_WRAPPER} from '../../../utils/StyleUtils';
+import { View, Button, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import StyleUtils, { SPACING_MEDIUM, CENTERED_CONTAINER, BUTTON_CONTAINER, BUTTON_WRAPPER } from '../../../utils/StyleUtils';
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../../../firebase/FirebaseConfig';
 
 const LoginForm = ({ onBack }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
 
   const signIn = async () => {
@@ -31,10 +32,10 @@ const LoginForm = ({ onBack }) => {
     <View style={styles.container}>
       <TextInput
         value={email}
-        style={styles.text_input} 
+        style={styles.text_input}
         placeholder="Email"
         placeholderTextColor={StyleUtils.TEXT_COLOR}
-        keyboardType = "email-address"
+        keyboardType="email-address"
         autoCapitalize="none"
         onChangeText={setEmail}
       />
@@ -65,9 +66,8 @@ const LoginForm = ({ onBack }) => {
           />
         </View>
       </View>
+      {loading && <ActivityIndicator size="large" color={StyleUtils.PRIMARY_COLOR} />}
     </View>
-
-    
   );
 };
 
@@ -75,12 +75,9 @@ const styles = StyleSheet.create({
   container: {
     ...CENTERED_CONTAINER,
     paddingHorizontal: SPACING_MEDIUM,
-    paddingVertical: SPACING_MEDIUM, // Add padding to the vertical axis
+    paddingVertical: SPACING_MEDIUM,
     backgroundColor: StyleUtils.SECONDARY_COLOR,
   },
-
-  //OVO TREBA IMPORTAT IZ STYLEUTILS, ALI NE ZELI RADITI ... TODO
-
   text_input: {
     width: '100%',
     height: 48,
@@ -94,7 +91,6 @@ const styles = StyleSheet.create({
     color: StyleUtils.TEXT_COLOR,
     backgroundColor: 'transparent',
   },
-
 });
 
 export default LoginForm;

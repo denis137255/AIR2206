@@ -1,6 +1,7 @@
 import { View, Text, Button, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { FIREBASE_AUTH, FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
 import { withNavigation } from '@react-navigation/compat';
 import refreshDataFromFirestore from '../../firebase/FirebaseRefresh';
@@ -20,6 +21,8 @@ const ClubInfoContainer = ({ navigation, clubInfo }) => {
 };
 
 const Menu = ({ navigation }) => {
+
+
   const handleNavigateToAddClub = () => {
     navigation.navigate('AddClub');
   };
@@ -27,28 +30,49 @@ const Menu = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [clubs, setClubs] = useState([]);
 
+  const fetchClubs = async () => {
+    setLoading(true);
+    const user = FIREBASE_AUTH.currentUser;
+    
+    if (!user) {
+      navigation.navigate('FirstScreen');
+      return; // Exit the function if user is not authenticated
+    }
+    
+    const creatorId = user.uid;
+  
+    const clubsCollection = collection(FIRESTORE_INSTANCE, 'clubs');
+    const clubsSnapshot = await getDocs(clubsCollection);
+    const clubsData = clubsSnapshot.docs
+      .filter((doc) => doc.data().createdBy === creatorId) // Filter clubs by current user's ID
+      .map((doc) => ({ id: doc.id, ...doc.data() }));
+    
+    setClubs(clubsData);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchClubs = async () => {
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      if (user) {
+        // User is logged in, fetch clubs or perform other actions
+        fetchClubs(setClubs); // Call your fetchClubs function here
+      } else {
+        // User is not logged in, navigate to the entry screen
+        navigation.navigate('FirstScreen'); // Replace with your entry screen name
+      }
+    });
 
-        setLoading(true);
-      const user = FIREBASE_AUTH.currentUser;
-      if (!user) return;
+    // Fetch clubs when the user navigates to the Menu page
+    if (navigation.isFocused()) { 
+      fetchClubs(setClubs);
+    }
   
-      const currentUserId = user.uid;
-  
-      const clubsCollection = collection(FIRESTORE_INSTANCE, 'clubs');
-      const clubsSnapshot = await getDocs(clubsCollection);
-      const clubsData = clubsSnapshot.docs
-        .filter((doc) => doc.data().createdBy === currentUserId) // Filter clubs by current user's ID
-        .map((doc) => ({ id: doc.id, ...doc.data() }));
-      
-      setClubs(clubsData);
-      setLoading(false);
+    return () => unsubscribe(); // Clean up the listener when the component unmounts
+  }, [navigation]);
 
-    };
-    refreshDataFromFirestore(setClubs);
+  const handleRefresh = () => {
     fetchClubs();
-  }, []);
+  };
 
   return (
     <View style={{ padding: 20 }}>
@@ -60,6 +84,7 @@ const Menu = ({ navigation }) => {
         <>
             <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logout" />
             <Button onPress={handleNavigateToAddClub} title="Add Club" />
+            <Button onPress={handleRefresh} title="Refresh" />
             {clubs.map((clubInfo) => (
             <ClubInfoContainer key={clubInfo.id} navigation={navigation} clubInfo={clubInfo} />
       ))}

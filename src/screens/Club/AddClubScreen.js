@@ -73,6 +73,7 @@ const AddClubScreen = ({ navigation }) => {
             location,
             contact,
             workingHours,
+            createdBy: creatorId   
           }
           
         if (clubImage) {
