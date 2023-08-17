@@ -6,6 +6,8 @@ import { FIRESTORE_INSTANCE, FIREBASE_AUTH } from '../../firebase/FirebaseConfig
 import { launchImageLibrary } from 'react-native-image-picker';
 
 
+const phoneNumberRegex = /^[0-9\s-]{9,10}$/;
+const workingHoursRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
 
 // You can import additional libraries for Google Maps integration here
     
@@ -49,6 +51,16 @@ const AddClubScreen = ({ navigation }) => {
 
         if (!currentUser) {
           Alert.alert('Authentication Error', 'User not authenticated');
+          return;
+        }
+
+        if (!phoneNumberRegex.test(contact)) {
+          Alert.alert('Invalid Contact', 'Please enter a valid phone number.');
+          return;
+        }
+    
+        if (!workingHoursRegex.test(workingHours)) {
+          Alert.alert('Invalid Working Hours', 'Please enter working hours in the format "hh:mm - hh:mm".');
           return;
         }
   
@@ -101,7 +113,7 @@ const AddClubScreen = ({ navigation }) => {
         <TextInput
           value={contact}
           onChangeText={setContact}
-          placeholder="Enter contact information"
+          placeholder="042 123 4567"
           style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
         />
   
@@ -109,7 +121,7 @@ const AddClubScreen = ({ navigation }) => {
         <TextInput
           value={workingHours}
           onChangeText={setWorkingHours}
-          placeholder="Enter working hours"
+          placeholder="08:00 - 23:00"
           style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
         />
   

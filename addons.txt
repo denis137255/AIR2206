@@ -16,3 +16,8 @@ module.exports = defaultConfig;
 
 yarn add @react-navigation/native @react-navigation/compat
 yarn add react-native-image-picker 
+expo install expo-app-loading
+expo install expo-font
+yarn add @react-native-picker/picker
+
+

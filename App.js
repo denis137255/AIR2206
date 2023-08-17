@@ -1,6 +1,10 @@
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
+import FirstScreen from './src/screens/Auth/FirstScreen'
+
+import * as Font from 'expo-font'; // Import the Font module
+
 
 import LoginScreen from './src/screens/Auth/Login/LoginScreen';
 import Menu from './src/screens/MainMenu/Menu';
@@ -16,9 +20,11 @@ const Stack = createNativeStackNavigator();
 
 const InsideStack = createNativeStackNavigator();
 
+
 //TODO Treba odvojen screen za ovu navigaciju napraviti
 //Obican user layout
 //Privremeno dodan AddClub, on ce ici u stack ispod
+
 function InsideLayout() {
   return (
     <InsideStack.Navigator>
@@ -35,14 +41,36 @@ function InsideLayout() {
 //TODO Ispod treba napravit drugi layout za admina
 
 export default function App() {
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [user, setUser] = useState(null);
-  
+
+
+  //Provjeri font stanje - obrisano
+
+  useEffect(() => {
+    // Load fonts when the component mounts
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        'Roboto-Regular': require('./src/utils/fonts/Roboto-Regular.ttf'),
+        // Load other fonts if needed
+      });
+      setDataLoaded(true); // Set dataLoaded to true when fonts are loaded
+    };
+
+    loadFonts(); // Call the function to load fonts
+  }, []); 
+
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) =>{
       setUser(user);
     })
 
   })
+
+  if (!dataLoaded) {
+    // Wait for fonts to be loaded before rendering the app
+    return null;
+  }
 
   return (
 
@@ -54,15 +82,15 @@ export default function App() {
     //TODO Poslati ga na WelcomeScreen, ne login 
 
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="FirstScreen">
         {user ? (<Stack.Screen 
          name= "Inside" 
          component={InsideLayout} 
          options={{ headerShown: false }} />
          ) : (
          <Stack.Screen 
-         name= "Login" 
-         component={LoginScreen} 
+         name= "FirstScreen" 
+         component={FirstScreen} 
          options={{headerShown: false}}/>)}
         
          
