@@ -1,5 +1,3 @@
-// StyleUtils.js
-
 import { Dimensions, PixelRatio } from 'react-native';
 
 // Calculate responsive font size based on device width
@@ -22,9 +20,41 @@ export const FONT_FAMILY_BOLD = 'Roboto-Bold';
 export const FONT_FAMILY_ITALIC = 'Roboto-Italic';
 
 // Common colors
-export const PRIMARY_COLOR = '#3498db';
-export const SECONDARY_COLOR = '#2ecc71';
-export const TEXT_COLOR = '#333';
+export const PRIMARY_COLOR = '#FFC107'; // A variant of yellow
+export const SECONDARY_COLOR = '#121212'; // A variant of black
+export const TEXT_COLOR = 'white';
+
+// Button style
+
+// Text input style
+
+export const TEXT_INPUT_STYLE = {
+  width: '70%',
+  height: 48,
+  borderWidth: 1,
+  borderColor: PRIMARY_COLOR, // Set the border color to primary color
+  paddingHorizontal: SPACING_MEDIUM,
+  margin: SPACING_MEDIUM,
+  fontSize: FONT_SIZE_MEDIUM,
+  fontFamily: FONT_FAMILY_REGULAR,
+  borderRadius: BORDER_RADIUS,
+  color: TEXT_COLOR,
+  backgroundColor: 'transparent', // Add transparent background color
+};
+
+export const BUTTON_CONTAINER = {
+  flexDirection: 'column',
+  height: '15%',
+  alignContent: 'center',
+  justifyContent: 'center',
+  marginTop: SPACING_MEDIUM,
+  width: '50%',
+};
+
+export const BUTTON_WRAPPER = {
+  flex: 1,
+  marginHorizontal: SPACING_MEDIUM,
+};
 
 // Other styles
 export const BORDER_RADIUS = 8;
@@ -41,7 +71,7 @@ export const CENTERED_CONTAINER = {
 };
 
 // Export the complete object as well
-const StyleUtils = {
+export const StyleUtils = {
   responsiveFontSize,
   FONT_SIZE_SMALL,
   FONT_SIZE_MEDIUM,
@@ -56,7 +86,8 @@ const StyleUtils = {
   SPACING_SMALL,
   SPACING_MEDIUM,
   SPACING_LARGE,
-  CENTERED_CONTAINER, // Add the centered container style
+  CENTERED_CONTAINER,
+   // Add the centered container style
   // Export more styles as needed
 };
 
