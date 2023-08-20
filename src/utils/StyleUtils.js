@@ -65,8 +65,10 @@ export const SPACING_LARGE = 24;
 // Centered container style
 export const CENTERED_CONTAINER = {
   flex: 1,
+  width: '100%',
   justifyContent: 'center',
   alignItems: 'center',
+  marginTop: 20,
   backgroundColor: SECONDARY_COLOR,
 };
 

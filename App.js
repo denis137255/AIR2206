@@ -28,17 +28,17 @@ const InsideStack = createNativeStackNavigator();
 function InsideLayout() {
   return (
     <InsideStack.Navigator>
-      <InsideStack.Screen name="Menu" component={Menu} />
-      <InsideStack.Screen name="AddClub" component={AddClubScreen} />
+      <InsideStack.Screen name="Menu" component={Menu} options={{ headerShown: false }}  />
+      <InsideStack.Screen name="AddClub" component={AddClubScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="AddFloor" component={AddFloorScreen} options={{ headerShown: false }}/>
-      <InsideStack.Screen name="MyClub" component={MyClubScreen} />
-      <InsideStack.Screen name="EditClub" component={EditClubScreen} />
+      <InsideStack.Screen name="MyClub" component={MyClubScreen} options={{ headerShown: false }} />
+      <InsideStack.Screen name="EditClub" component={EditClubScreen} options={{ headerShown: false }} />
 
 
     </InsideStack.Navigator>
   );
 }
-//TODO Ispod treba napravit drugi layout za admina
+//TODO Ispod treba napravit drugi layout za korisnika
 
 export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -92,8 +92,6 @@ export default function App() {
          name= "FirstScreen" 
          component={FirstScreen} 
          options={{headerShown: false}}/>)}
-        
-         
       </Stack.Navigator>
     </NavigationContainer>
   );
