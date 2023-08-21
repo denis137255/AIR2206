@@ -149,9 +149,9 @@ const styles = StyleSheet.create({
   clubList: {
     alignSelf: 'stretch',
     alignContent: 'center',
-    paddingTop: SPACING_MEDIUM,
-    paddingHorizontal: SPACING_MEDIUM,
+    padding: SPACING_MEDIUM,
     backgroundColor: SECONDARY_COLOR,
+    flex: 1,
     //Testiranje border, treba biti rasprostranjen do gumbova i scrollable
     borderColor: 'white',
     borderWidth: 1,
