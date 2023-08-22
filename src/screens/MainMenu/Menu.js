@@ -7,7 +7,9 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  ImageBackground
 } from 'react-native';
+
 import { FIREBASE_AUTH, FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, getDocs } from 'firebase/firestore';
@@ -27,8 +29,16 @@ const ClubInfoContainer = ({ navigation, clubInfo }) => {
 
   return (
     <TouchableOpacity onPress={handleNavigateToClubDetails} style={styles.clubContainer}>
-      <Text style={styles.clubName}>{clubInfo.clubName}</Text>
-      <Text style={styles.clubLocation}>{clubInfo.location}</Text>
+      <ImageBackground
+        source={{ uri: clubInfo.clubImage }}
+        style={styles.imageBackground}
+        imageStyle={styles.image}
+      >
+        <View style={styles.textContainer}>
+          <Text style={styles.clubName}>{clubInfo.clubName}</Text>
+          <Text style={styles.clubLocation}>{clubInfo.location}</Text>
+        </View>
+      </ImageBackground>
     </TouchableOpacity>
   );
 };
@@ -93,7 +103,7 @@ const Menu = ({ navigation }) => {
         </View>
       ) : (
         <>
-          <ScrollView contentContainerStyle={styles.clubList}>
+          <ScrollView contentContainerStyle={styles.clubList} scrollEnabled={false}>
             {clubs.map((clubInfo) => (
               <ClubInfoContainer key={clubInfo.id} navigation={navigation} clubInfo={clubInfo} />
             ))}
@@ -130,7 +140,7 @@ const Menu = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     ...CENTERED_CONTAINER,
-    padding: 10,
+    paddingTop: 5,
   },
   loadingContainer: {
     ...CENTERED_CONTAINER,
@@ -140,24 +150,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: PRIMARY_COLOR,
     backgroundColor: SECONDARY_COLOR,
-    padding: 10,
+    padding: 1.5,
     marginBottom: 10,
     borderRadius: 8,
     alignSelf: 'center', // Center the container within the list
     minWidth: '100%',
+    height: '30%'
   },
   clubList: {
     alignSelf: 'stretch',
     alignContent: 'center',
-    padding: SPACING_MEDIUM,
     backgroundColor: SECONDARY_COLOR,
-    flex: 1,
     //Testiranje border, treba biti rasprostranjen do gumbova i scrollable
     borderColor: 'white',
     borderWidth: 1,
     width: '100%',
     alignSelf: 'center',
-    alignContent: 'stretch',
+    alignContent: 'center',
+    marginBottom: 10,
+    flex: 1,
   },
   clubName: {
     fontSize: 18,
@@ -168,6 +179,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: PRIMARY_COLOR,
   },
+  imageBackground: {
+    flex: 1,
+    borderRadius: 1,
+    overflow: 'hidden',
+  },
+  image: {
+    resizeMode: 'crop', // Crop or stretch the image to cover the container
+    opacity: 0.8, // Apply a slight blur effect
+    resizeMode: 'cover'
+  },
+  textContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent background for text
+    padding: 10,
+    borderRadius: 8,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
 });
 
 export default Menu;
