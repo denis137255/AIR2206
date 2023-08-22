@@ -68,7 +68,7 @@ export const CENTERED_CONTAINER = {
   width: '100%',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: 20,
+  marginTop: 35,
   backgroundColor: SECONDARY_COLOR,
 };
 

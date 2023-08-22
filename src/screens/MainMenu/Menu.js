@@ -28,7 +28,7 @@ const ClubInfoContainer = ({ navigation, clubInfo }) => {
   };
 
   return (
-    <TouchableOpacity onPress={handleNavigateToClubDetails} style={styles.clubContainer}>
+    <TouchableOpacity style={styles.clubContainer}>
       <ImageBackground
         source={{ uri: clubInfo.clubImage }}
         style={styles.imageBackground}
@@ -103,7 +103,7 @@ const Menu = ({ navigation }) => {
         </View>
       ) : (
         <>
-          <ScrollView contentContainerStyle={styles.clubList} scrollEnabled={false}>
+          <ScrollView contentContainerStyle={styles.clubList} scrollEnabled={true}>
             {clubs.map((clubInfo) => (
               <ClubInfoContainer key={clubInfo.id} navigation={navigation} clubInfo={clubInfo} />
             ))}
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
   container: {
     ...CENTERED_CONTAINER,
     paddingTop: 5,
+    flex: 1,
   },
   loadingContainer: {
     ...CENTERED_CONTAINER,
@@ -155,11 +156,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignSelf: 'center', // Center the container within the list
     minWidth: '100%',
-    height: '30%'
+    height: '30%',
   },
   clubList: {
-    alignSelf: 'stretch',
-    alignContent: 'center',
     backgroundColor: SECONDARY_COLOR,
     //Testiranje border, treba biti rasprostranjen do gumbova i scrollable
     borderColor: 'white',
