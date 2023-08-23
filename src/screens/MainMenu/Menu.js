@@ -28,7 +28,7 @@ const ClubInfoContainer = ({ navigation, clubInfo }) => {
   };
 
   return (
-    <TouchableOpacity style={styles.clubContainer}>
+    <TouchableOpacity style={styles.clubContainer} onPress={handleNavigateToClubDetails}>
       <ImageBackground
         source={{ uri: clubInfo.clubImage }}
         style={styles.imageBackground}

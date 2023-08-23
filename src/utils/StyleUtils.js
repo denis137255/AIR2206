@@ -29,17 +29,17 @@ export const TEXT_COLOR = 'white';
 // Text input style
 
 export const TEXT_INPUT_STYLE = {
-  width: '70%',
+  width: '100%',
   height: 48,
   borderWidth: 1,
-  borderColor: PRIMARY_COLOR, // Set the border color to primary color
+  borderColor: PRIMARY_COLOR,
   paddingHorizontal: SPACING_MEDIUM,
-  margin: SPACING_MEDIUM,
+  marginBottom: SPACING_MEDIUM,
   fontSize: FONT_SIZE_MEDIUM,
   fontFamily: FONT_FAMILY_REGULAR,
   borderRadius: BORDER_RADIUS,
   color: TEXT_COLOR,
-  backgroundColor: 'transparent', // Add transparent background color
+  backgroundColor: 'transparent',
 };
 
 export const BUTTON_CONTAINER = {

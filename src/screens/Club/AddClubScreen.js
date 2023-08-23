@@ -1,8 +1,7 @@
   import React, { useState } from 'react';
   import { View, Text, TextInput, Button, Alert } from 'react-native';
-  import { collection, addDoc } from 'firebase/firestore';
+  import { collection, addDoc, updateDoc, doc} from 'firebase/firestore';
   import { FIRESTORE_INSTANCE, FIREBASE_AUTH, getListOfImages} from '../../firebase/FirebaseConfig';
-import { listAll } from 'firebase/storage';
 
 
   const phoneNumberRegex = /^[0-9\s-]{9,10}$/;
@@ -10,62 +9,64 @@ import { listAll } from 'firebase/storage';
 
   // You can import additional libraries for Google Maps integration here
       
-  const AddClubScreen = ({ navigation }) => {
-      const [clubName, setClubName] = useState('');
-      const [location, setLocation] = useState('');
-      const [contact, setContact] = useState('');
-      const [workingHours, setWorkingHours] = useState('');
 
-      const handleAddClub = async () => {
-        if (!clubName || !location || !contact || !workingHours) {
-          Alert.alert('Missing Information', 'Please fill in all fields');
+  const AddClubScreen = ({ navigation }) => {
+    const [clubName, setClubName] = useState('');
+    const [location, setLocation] = useState('');
+    const [contact, setContact] = useState('');
+    const [workingHours, setWorkingHours] = useState('');
+  
+    const handleAddClub = async () => {
+      if (!clubName || !location || !contact || !workingHours) {
+        Alert.alert('Missing Information', 'Please fill in all fields');
+        return;
+      }
+  
+      try {
+        const currentUser = FIREBASE_AUTH.currentUser;
+  
+        if (!currentUser) {
+          Alert.alert('Authentication Error', 'User not authenticated');
           return;
         }
-    
-        try {
+  
+        const creatorId = currentUser.uid;
+        const clubsCollectionRef = collection(FIRESTORE_INSTANCE, 'clubs');
+  
+        const imageUrls = await getListOfImages(); // Fetch list of image URLs
+        const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
+  
+        const clubData = {
+          clubId: null, // To be filled later
+          clubName,
+          location,
+          contact,
+          workingHours,
+          clubImage: randomImageUrl,
+          createdBy: creatorId,
+        };
+  
+        const docRef = await addDoc(clubsCollectionRef, clubData);
+        const clubId = docRef.id;
+  
+        // Update the club's data with the generated clubId
+        const existingDocRef = doc(FIRESTORE_INSTANCE, 'clubs', docRef.id); // Assuming newDocRef.id is the document ID
+        const updatedData = {
+          // Update the fields you want to change
+          clubId: clubId,
+        };
 
-          const currentUser = FIREBASE_AUTH.currentUser;
+        await updateDoc(existingDocRef, updatedData);
 
-          if (!currentUser) {
-            Alert.alert('Authentication Error', 'User not authenticated');
-            return;
-          }
         
-         {/* if (!phoneNumberRegex.test(contact)) {
-            Alert.alert('Invalid Contact', 'Please enter a valid phone number.');
-            return;
-          } */}
-          
-          {/* if (!workingHoursRegex.test(workingHours)) {
-            Alert.alert('Invalid Working Hours', 'Please enter working hours in the format "hh:mm - hh:mm".');
-            return;
-          } */}
-    
-          const creatorId = currentUser.uid;
-    
-          const clubsCollectionRef = collection(FIRESTORE_INSTANCE, 'clubs');
-
-          const imageUrls = await getListOfImages(); // Fetch list of image URLs
-          const randomImageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
-
-          const clubData = {
-              clubName,
-              location,
-              contact,
-              workingHours,
-              clubImage: randomImageUrl,
-              createdBy: creatorId   
-            }
-            
-      await addDoc(clubsCollectionRef, clubData);
-
-      // Success, navigate to the next screen or perform any other action
-      navigation.replace('AddFloor'); // Replace with your desired navigation
-        } catch (error) {
-          console.error('Error adding club:', error);
-          Alert.alert('Error', 'An error occurred while adding the club');
-        }
-      };
+  
+        // Success, navigate to the next screen or perform any other action
+        navigation.navigate('AddFloor', { clubId, clubData });
+      } catch (error) {
+        console.error('Error adding club:', error);
+        Alert.alert('Error', 'An error occurred while adding the club');
+      }
+    };
     
       return (
         <View style={{ flex: 1, padding: 16 }}>

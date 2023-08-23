@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
+import { StyleUtils } from '../../utils/StyleUtils'; // Import StyleUtils
 
 const MyClubScreen = ({ route, navigation }) => {
   const { clubInfo } = route.params;
@@ -31,32 +32,58 @@ const MyClubScreen = ({ route, navigation }) => {
       </View>
 
       {/* Add more fields for other club information */}
-      
-      <Button title="Edit" onPress={() => navigation.navigate('EditClub', { clubInfo })} />
-      <Button title="Delete" onPress={handleDeleteClub} color="red" />
+      <View style={styles.buttonContainer}>
+        <Button 
+        title="Edit" 
+        onPress={() => navigation.navigate('EditClub', { clubInfo })}
+        color={StyleUtils.PRIMARY_COLOR}
+         />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Create Event"
+    // TODO onPress={() => navigation.navigate('CreateEvent', { clubId: clubInfo.id })}
+          color={StyleUtils.PRIMARY_COLOR} // Use primary color from StyleUtils
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Delete" onPress={handleDeleteClub} color="red" />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20,
+    ...StyleUtils.CENTERED_CONTAINER, // Apply centered container style
+    padding: StyleUtils.SPACING_LARGE, // Use SPACING_LARGE from StyleUtils
   },
   fieldContainer: {
-    marginBottom: 16,
+    marginBottom: StyleUtils.SPACING_MEDIUM, // Use SPACING_MEDIUM from StyleUtils
   },
   label: {
-    fontSize: 16,
+    fontSize: StyleUtils.FONT_SIZE_MEDIUM, // Use FONT_SIZE_MEDIUM from StyleUtils
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: StyleUtils.SPACING_SMALL, // Use SPACING_SMALL from StyleUtils
+    color: StyleUtils.TEXT_COLOR, // Use TEXT_COLOR from StyleUtils
   },
   value: {
-    fontSize: 16,
+    width: '100%',
+    height: 48,
     borderWidth: 1,
-    padding: 8,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderColor: StyleUtils.PRIMARY_COLOR,
+    paddingHorizontal: StyleUtils.SPACING_MEDIUM,
+    marginBottom: StyleUtils.SPACING_MEDIUM,
+    fontSize: StyleUtils.FONT_SIZE_MEDIUM,
+    fontFamily: StyleUtils.FONT_FAMILY_REGULAR,
+    borderRadius: StyleUtils.BORDER_RADIUS,
+    color: StyleUtils.TEXT_COLOR,
+    backgroundColor: 'transparent',
+  },
+  buttonContainer: {
+    marginBottom: StyleUtils.SPACING_MEDIUM, // Use SPACING_MEDIUM from StyleUtils
+    width: '40%'
   },
 });
 

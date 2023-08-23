@@ -8,7 +8,7 @@ import * as Font from 'expo-font'; // Import the Font module
 
 import LoginScreen from './src/screens/Auth/Login/LoginScreen';
 import Menu from './src/screens/MainMenu/Menu';
-import AddClubScreen from './src/screens/Club/AddClubScreen'
+import AddClubScreen from './src/screens/Club/AddClubScreen';
 import AddFloorScreen from './src/screens/Club/AddFloorScreen';
 import MyClubScreen from './src/screens/Club/MyClubScreen';
 import EditClubScreen from './src/screens/Club/EditClub';
@@ -33,8 +33,6 @@ function InsideLayout() {
       <InsideStack.Screen name="AddFloor" component={AddFloorScreen} options={{ headerShown: false }}/>
       <InsideStack.Screen name="MyClub" component={MyClubScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="EditClub" component={EditClubScreen} options={{ headerShown: false }} />
-
-
     </InsideStack.Navigator>
   );
 }
