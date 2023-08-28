@@ -1,0 +1,1 @@
+//TODO, kopirati clubscreen, zamjeniti gumbove i staviti evente da se vide.

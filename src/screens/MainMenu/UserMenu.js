@@ -6,9 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  ScrollView,
   ImageBackground,
-  FlatList
+  FlatList,
 } from 'react-native';
 
 import { FIREBASE_AUTH, FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
@@ -23,31 +22,30 @@ import StyleUtils, {
   SPACING_MEDIUM,
 } from '../../utils/StyleUtils';
 
-
 const ClubInfoContainer = ({ navigation, clubInfo }) => {
-  const handleNavigateToClubDetails = () => {
-      navigation.navigate('MyClub', { clubInfo });
-    };
-  return (
-    <TouchableOpacity
-      style={styles.clubContainer}
-      onPress={() => handleNavigateToClubDetails(navigation, clubInfo)}
-    >
-      <ImageBackground
-        source={{ uri: clubInfo.clubImage }}
-        style={styles.imageBackground}
-        imageStyle={styles.image}
+    const handleNavigateToClubDetails = () => {
+        navigation.navigate('MyClub', { clubInfo });
+      };
+    return (
+      <TouchableOpacity
+        style={styles.clubContainer}
+        onPress={() => handleNavigateToClubDetails(navigation, clubInfo)}
       >
-        <View style={styles.textContainer}>
-          <Text style={styles.clubName}>{clubInfo.clubName}</Text>
-          <Text style={styles.clubLocation}>{clubInfo.location}</Text>
-        </View>
-      </ImageBackground>
-    </TouchableOpacity>
-  );
+        <ImageBackground
+          source={{ uri: clubInfo.clubImage }}
+          style={styles.imageBackground}
+          imageStyle={styles.image}
+        >
+          <View style={styles.textContainer}>
+            <Text style={styles.clubName}>{clubInfo.clubName}</Text>
+            <Text style={styles.clubLocation}>{clubInfo.location}</Text>
+          </View>
+        </ImageBackground>
+      </TouchableOpacity>
+    );
 };
 
-const Menu = ({ navigation }) => {
+const UserMenu = ({ navigation }) => {
   const handleNavigateToAddClub = () => {
     navigation.navigate('AddClub');
   };
@@ -68,9 +66,7 @@ const Menu = ({ navigation }) => {
 
     const clubsCollection = collection(FIRESTORE_INSTANCE, 'clubs');
     const clubsSnapshot = await getDocs(clubsCollection);
-    const clubsData = clubsSnapshot.docs
-      .filter((doc) => doc.data().createdBy === creatorId) // Filter clubs by the current user's ID
-      .map((doc) => ({ id: doc.id, ...doc.data() }));
+    const clubsData = clubsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     setClubs(clubsData);
     setLoading(false);
@@ -87,7 +83,7 @@ const Menu = ({ navigation }) => {
       }
     });
 
-    // Fetch clubs when the user navigates to the Menu page
+    // Fetch clubs when the user navigates to the UserMenu page
     if (navigation.isFocused()) {
       fetchClubs(setClubs);
     }
@@ -111,9 +107,9 @@ const Menu = ({ navigation }) => {
             data={clubs}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <ClubInfoContainer navigation={navigation} clubInfo={item} />
-            )}
-          />
+                <ClubInfoContainer navigation={navigation} clubInfo={item} />
+                )}
+              />
           <View style={BUTTON_CONTAINER}>
             <View style={BUTTON_WRAPPER}>
               <Button
@@ -164,17 +160,6 @@ const styles = StyleSheet.create({
     height: 200, // Increase the height of each club container
     justifyContent: 'center', // Center the content vertically
   },
-  clubList: {
-    backgroundColor: SECONDARY_COLOR,
-    //Testiranje border, treba biti rasprostranjen do gumbova i scrollable
-    borderColor: 'white',
-    borderWidth: 1,
-    width: '100%',
-    alignSelf: 'center',
-    alignContent: 'center',
-    marginBottom: 10,
-    flex: 1,
-  },
   clubName: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -190,19 +175,18 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   image: {
-    resizeMode: 'crop', // Crop or stretch the image to cover the container
-    opacity: 0.8, // Apply a slight blur effect
+    resizeMode: 'crop',
+    opacity: 0.8,
     resizeMode: 'cover'
   },
   textContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)', // Semi-transparent background for text
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     padding: 10,
     borderRadius: 8,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
 });
 
-export default Menu;
+export default UserMenu;

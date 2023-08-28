@@ -6,7 +6,7 @@ import RegistrationForm from './Registration/RegistrationForm';
 import { Picker } from '@react-native-picker/picker';
 
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showRegistrationForm, setShowRegistrationForm] = useState(false);
 

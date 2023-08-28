@@ -5,8 +5,8 @@ import FirstScreen from './src/screens/Auth/FirstScreen'
 
 import * as Font from 'expo-font'; // Import the Font module
 
+import UserMenu from './src/screens/MainMenu/UserMenu';
 
-import LoginScreen from './src/screens/Auth/Login/LoginScreen';
 import Menu from './src/screens/MainMenu/Menu';
 import AddClubScreen from './src/screens/Club/AddClubScreen';
 import AddFloorScreen from './src/screens/Club/AddFloorScreen';
@@ -20,6 +20,8 @@ const Stack = createNativeStackNavigator();
 
 const InsideStack = createNativeStackNavigator();
 
+const UserStack = createNativeStackNavigator();
+
 
 //TODO Treba odvojen screen za ovu navigaciju napraviti
 //Obican user layout
@@ -29,6 +31,17 @@ function InsideLayout() {
   return (
     <InsideStack.Navigator>
       <InsideStack.Screen name="Menu" component={Menu} options={{ headerShown: false }}  />
+      <InsideStack.Screen name="AddClub" component={AddClubScreen} options={{ headerShown: false }} />
+      <InsideStack.Screen name="AddFloor" component={AddFloorScreen} options={{ headerShown: false }}/>
+      <InsideStack.Screen name="MyClub" component={MyClubScreen} options={{ headerShown: false }} />
+      <InsideStack.Screen name="EditClub" component={EditClubScreen} options={{ headerShown: false }} />
+    </InsideStack.Navigator>
+  );
+}
+function UserLayout() {
+  return (
+    <InsideStack.Navigator>
+      <InsideStack.Screen name="UserMenu" component={UserMenu} options={{ headerShown: false }}  />
       <InsideStack.Screen name="AddClub" component={AddClubScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="AddFloor" component={AddFloorScreen} options={{ headerShown: false }}/>
       <InsideStack.Screen name="MyClub" component={MyClubScreen} options={{ headerShown: false }} />

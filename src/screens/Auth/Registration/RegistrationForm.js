@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput} from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, Alert} from 'react-native';
 import StyleUtils, { SPACING_MEDIUM, CENTERED_CONTAINER, BUTTON_CONTAINER, BUTTON_WRAPPER, SECONDARY_COLOR} from '../../../utils/StyleUtils';
 import { Picker } from '@react-native-picker/picker';
 
@@ -11,6 +11,10 @@ const RegistrationForm = ({ onBack }) => {
   const [userType, setUserType] = useState('User');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
+
+  const ComingSoon = () => {
+    Alert.alert="Feature not yet added!"
+  }
 
   return (
     <View style={styles.container}>
