@@ -23,13 +23,13 @@ import StyleUtils, {
 } from '../../utils/StyleUtils';
 
 const ClubInfoContainer = ({ navigation, clubInfo }) => {
-    const handleNavigateToClubDetails = () => {
-        navigation.navigate('MyClub', { clubInfo });
+    const handleNavigateToUserClubScreen = () => {
+        navigation.navigate('UserClubScreen', { clubInfo });
       };
     return (
       <TouchableOpacity
         style={styles.clubContainer}
-        onPress={() => handleNavigateToClubDetails(navigation, clubInfo)}
+        onPress={() => handleNavigateToUserClubScreen(navigation, clubInfo)}
       >
         <ImageBackground
           source={{ uri: clubInfo.clubImage }}
