@@ -80,19 +80,25 @@ const Menu = ({ navigation }) => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
       if (user) {
         // User is logged in, fetch clubs or perform other actions
-        fetchClubs(setClubs);
+        fetchClubs();
       } else {
         // User is not logged in, navigate to the entry screen
         navigation.navigate('FirstScreen');
       }
     });
 
-    // Fetch clubs when the user navigates to the Menu page
-    if (navigation.isFocused()) {
-      fetchClubs(setClubs);
-    }
+    // Fetch clubs when the component mounts
+    fetchClubs();
 
-    return () => unsubscribe(); // Clean up the listener when the component unmounts
+    // Add listener to fetch clubs when screen is focused
+    const focusListener = navigation.addListener('focus', () => {
+      fetchClubs();
+    });
+
+    return () => {
+      unsubscribe();
+      focusListener(); // Remove the focus listener when the component unmounts
+    };
   }, [navigation]);
 
   const handleRefresh = () => {

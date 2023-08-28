@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, Button, Alert, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import StyleUtils, {
   FONT_SIZE_MEDIUM,
   FONT_FAMILY_BOLD,
@@ -13,6 +13,9 @@ import StyleUtils, {
   TEXT_COLOR,
   SPACING_SMALL,
 } from '../../utils/StyleUtils';
+import { doc, deleteDoc} from 'firebase/firestore';
+import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
+
 
 const MyClubScreen = ({ route, navigation }) => {
   const { clubInfo } = route.params;

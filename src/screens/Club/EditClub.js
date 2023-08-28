@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { updateDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc} from 'firebase/firestore';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
 import { StyleUtils } from '../../utils/StyleUtils'; // Import StyleUtils
 
