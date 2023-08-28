@@ -6,6 +6,7 @@ import FirstScreen from './src/screens/Auth/FirstScreen'
 import * as Font from 'expo-font'; // Import the Font module
 
 import UserMenu from './src/screens/MainMenu/UserMenu';
+import UserClubScreen from './src/screens/Club/UserClubScreen';
 
 import Menu from './src/screens/MainMenu/Menu';
 import AddClubScreen from './src/screens/Club/AddClubScreen';
@@ -44,7 +45,7 @@ function UserLayout() {
       <InsideStack.Screen name="UserMenu" component={UserMenu} options={{ headerShown: false }}  />
       <InsideStack.Screen name="AddClub" component={AddClubScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="AddFloor" component={AddFloorScreen} options={{ headerShown: false }}/>
-      <InsideStack.Screen name="MyClub" component={MyClubScreen} options={{ headerShown: false }} />
+      <InsideStack.Screen name="UserClubScreen" component={UserClubScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="EditClub" component={EditClubScreen} options={{ headerShown: false }} />
     </InsideStack.Navigator>
   );
@@ -87,16 +88,12 @@ export default function App() {
 
     //Provjeri stanje prijave, pa ga posalje u app
     //TODO Kasnije treba poslije provjere provjeriti tip korisnika i poslati ga u pravom smjeru
-    //TODO sugeriram switchcase (jer nam treba i superadmin ovdje)
-
-
-    //TODO Poslati ga na WelcomeScreen, ne login 
 
     <NavigationContainer>
       <Stack.Navigator initialRouteName="FirstScreen">
         {user ? (<Stack.Screen 
          name= "Inside" 
-         component={InsideLayout} 
+         component={UserLayout} 
          options={{ headerShown: false }} />
          ) : (
          <Stack.Screen 
