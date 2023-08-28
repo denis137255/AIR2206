@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
 import { doc, setDoc } from 'firebase/firestore';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
-import { StyleUtils } from '../../utils/StyleUtils';
+import { PRIMARY_COLOR, StyleUtils } from '../../utils/StyleUtils';
 import Svg, { Circle } from 'react-native-svg';
 
 const AddFloorScreen = ({ route, navigation }) => {
@@ -66,23 +66,21 @@ const AddFloorScreen = ({ route, navigation }) => {
     navigation.navigate('Menu');
   };
 
-  const screenWidth = Dimensions.get('window').width;
+  const screenWidth = Dimensions.get('window').width * 0.95;
   const screenHeight = Dimensions.get('window').height * 0.7;
-  const canvasWidth = screenWidth;
-  const canvasHeight = screenHeight;
 
   return (
     <View style={StyleUtils.CENTERED_CONTAINER}>
       <Text style={styles.title}>Add Floor Plan</Text>
 
       <View style={styles.selectionContainer}>
-        <Button title="-" onPress={handleDecreaseDots} />
+        <Button title="-" color={PRIMARY_COLOR} onPress={handleDecreaseDots} />
         <Text style={styles.numDots}>{numDots}</Text>
-        <Button title="+" onPress={handleIncreaseDots} />
+        <Button title="+" color={PRIMARY_COLOR} onPress={handleIncreaseDots} />
       </View>
 
-      <View style={[styles.canvasContainer, { width: canvasWidth, height: canvasHeight }]}>
-        <Svg width={canvasWidth} height={canvasHeight} style={styles.canvas}>
+      <View style={[styles.canvasContainer, { width: screenWidth, height: screenHeight }]}>
+        <Svg style={styles.canvas}>
           {dots.map((dot, index) => (
             <Circle
               key={index}
@@ -125,13 +123,15 @@ const styles = StyleSheet.create({
   },
   canvasContainer: {
     alignSelf: 'center',
-    width: '100%',
+    width: '95%',
     marginTop: StyleUtils.SPACING_MEDIUM,
+    marginBottom: StyleUtils.SPACING_LARGE,
+    borderWidth: 1,
+    borderColor: PRIMARY_COLOR,
   },
   canvas: {
-    backgroundColor: '#f0f0f0',
-    borderWidth: 2,
-    borderColor: StyleUtils.PRIMARY_COLOR,
+    backgroundColor: 'black',
+    padding: 5,
   },
 });
 
