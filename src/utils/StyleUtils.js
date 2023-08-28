@@ -48,7 +48,8 @@ export const BUTTON_CONTAINER = {
   alignContent: 'center',
   justifyContent: 'center',
   marginTop: SPACING_MEDIUM,
-  width: '50%',
+  width: '100%',
+  padding: SPACING_MEDIUM
 };
 
 export const BUTTON_WRAPPER = {
@@ -65,7 +66,6 @@ export const SPACING_LARGE = 24;
 // Centered container style
 export const CENTERED_CONTAINER = {
   flex: 1,
-  width: '100%',
   justifyContent: 'center',
   alignItems: 'center',
   marginTop: 20,

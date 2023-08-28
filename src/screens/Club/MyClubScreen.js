@@ -87,6 +87,7 @@ const MyClubScreen = ({ route, navigation }) => {
 
 
       {/* Add more fields for other club information */}
+    <View style={StyleUtils.BUTTON_CONTAINER}>
       <View style={styles.buttonContainer}>
         <Button 
         title="Edit" 
@@ -105,6 +106,7 @@ const MyClubScreen = ({ route, navigation }) => {
         <Button title="Delete" onPress={handleDeleteClub} color="red" />
       </View>
     </View>
+  </View>
   );
 };
 

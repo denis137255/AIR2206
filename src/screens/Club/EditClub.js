@@ -5,6 +5,7 @@ import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
 import { StyleUtils } from '../../utils/StyleUtils'; // Import StyleUtils
 
 //TODO - Prava lokacija, data validation
+//TODO - Refresh nakon Edit
 
 const EditClubScreen = ({ route, navigation }) => {
   const { clubInfo } = route.params;
@@ -66,13 +67,14 @@ const EditClubScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     ...StyleUtils.CENTERED_CONTAINER, // Apply centered container style
-    padding: StyleUtils.SPACING_LARGE, // Use SPACING_LARGE from StyleUtils
+    padding: StyleUtils.SPACING_MEDIUM, // Use SPACING_LARGE from StyleUtils
   },
   label: {
     fontSize: StyleUtils.FONT_SIZE_MEDIUM, // Use FONT_SIZE_MEDIUM from StyleUtils
     fontWeight: 'bold',
     marginBottom: StyleUtils.SPACING_SMALL, // Use SPACING_SMALL from StyleUtils
     color: StyleUtils.TEXT_COLOR, // Use TEXT_COLOR from StyleUtils
+    alignSelf: 'baseline'
   },
   input: {
     width: '100%',

@@ -12,8 +12,8 @@ const RegistrationForm = ({ onBack }) => {
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
 
-  const ComingSoon = () => {
-    Alert.alert="Feature not yet added!"
+  const ComingSoon = async () => {
+    Alert.alert('Note','Feature not yet added!');
   }
 
   return (
@@ -70,7 +70,7 @@ const RegistrationForm = ({ onBack }) => {
       />
       <View style={BUTTON_CONTAINER}>
         <View style={BUTTON_WRAPPER}>
-          <Button title="Register" onPress={() => {}} color={StyleUtils.PRIMARY_COLOR} />
+          <Button title="Register" onPress={ComingSoon} color={StyleUtils.PRIMARY_COLOR} />
         </View>
         <View style={BUTTON_WRAPPER}>
           <Button title="Back" onPress={onBack} color={StyleUtils.PRIMARY_COLOR} />
