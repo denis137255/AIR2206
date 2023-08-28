@@ -4,6 +4,8 @@ import { updateDoc, doc } from 'firebase/firestore';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
 import { StyleUtils } from '../../utils/StyleUtils'; // Import StyleUtils
 
+//TODO - Prava lokacija, data validation
+
 const EditClubScreen = ({ route, navigation }) => {
   const { clubInfo } = route.params;
   const [editedClubInfo, setEditedClubInfo] = useState({ ...clubInfo });

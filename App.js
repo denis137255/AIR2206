@@ -64,6 +64,7 @@ export default function App() {
     const loadFonts = async () => {
       await Font.loadAsync({
         'Roboto-Regular': require('./src/utils/fonts/Roboto-Regular.ttf'),
+        'Roboto-Bold': require('./src/utils/fonts/Roboto-Bold.ttf')
         // Load other fonts if needed
       });
       setDataLoaded(true); // Set dataLoaded to true when fonts are loaded
