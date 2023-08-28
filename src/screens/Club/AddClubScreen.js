@@ -1,5 +1,6 @@
   import React, { useState } from 'react';
   import { View, Text, TextInput, Button, Alert } from 'react-native';
+  import PhoneInput from 'react-native-phone-input';
   import { collection, addDoc, updateDoc, doc} from 'firebase/firestore';
   import { FIRESTORE_INSTANCE, FIREBASE_AUTH, getListOfImages} from '../../firebase/FirebaseConfig';
   import {
@@ -7,32 +8,29 @@
   } from 'react-native-google-places-autocomplete';
 
 
-  const phoneNumberRegex = /^[0-9\s-]{9,10}$/;
-  const workingHoursRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
-
   // You can import additional libraries for Google Maps integration here
       
 
   const AddClubScreen = ({ navigation }) => {
     const [clubName, setClubName] = useState('');
     const [location, setLocation] = useState('');
-    const [contact, setContact] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [workingHours, setWorkingHours] = useState('');
   
     const handleAddClub = async () => {
-      if (!clubName || !location || !contact || !workingHours) {
+      if (!clubName || !location || !phoneNumber || !workingHours) {
         Alert.alert('Missing Information', 'Please fill in all fields');
+        return;
+      }
+
+      if (!workingHours.match(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\s*-\s*(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)) {
+        Alert.alert('Invalid Working Hours', 'Please enter working hours in the format "hh:mm - hh:mm"');
         return;
       }
   
       try {
         const currentUser = FIREBASE_AUTH.currentUser;
-  
-        if (!currentUser) {
-          Alert.alert('Authentication Error', 'User not authenticated');
-          return;
-        }
-  
+
         const creatorId = currentUser.uid;
         const clubsCollectionRef = collection(FIRESTORE_INSTANCE, 'clubs');
   
@@ -43,7 +41,7 @@
           clubId: null, // To be filled later
           clubName,
           location,
-          contact,
+          phoneNumber,
           workingHours,
           clubImage: randomImageUrl,
           createdBy: creatorId,
@@ -69,8 +67,7 @@
         console.error('Error adding club:', error);
         Alert.alert('Error', 'An error occurred while adding the club');
       }
-    };
-    
+    };  
       return (
         <View style={{ flex: 1, padding: 16 }}>
           <Text>Club Name:</Text>
@@ -83,27 +80,30 @@
     
           <Text>Location:</Text>
           <GooglePlacesAutocomplete
-        placeholder="Enter location"
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          setLocation(details.formatted_address); // Set the selected location
-        }}
-        query={{
-          key: 'AIzaSyA7UNIGsCr4eTYd7EjivR_lwcKgPpFdPPw',
-          language: 'en',
-        }}
-        styles={{
-          textInput: { borderWidth: 1, padding: 8, marginBottom: 16 },
-        }}
-        // Set fetchDetails to get additional details such as formatted_address
-        fetchDetails
-      />
+            placeholder="Enter location"
+            onPress={(data, details = null) => {
+              // 'details' is provided when fetchDetails = true
+              setLocation(details.formatted_address); // Set the selected location
+            }}
+            query={{
+              key: 'AIzaSyA7UNIGsCr4eTYd7EjivR_lwcKgPpFdPPw',
+              language: 'en',
+            }}
+            styles={{
+              textInput: { borderWidth: 1, padding: 8, marginBottom: 16 },
+            }}
+            // Set fetchDetails to get additional details such as formatted_address
+            fetchDetails
+          />
     
           <Text>Contact:</Text>
-          <TextInput
-            value={contact}
-            onChangeText={setContact}
-            placeholder="042 123 4567"
+          <PhoneInput
+            ref={(ref) => {
+              phoneInput = ref;
+            }}
+            value={phoneNumber}
+            onChangePhoneNumber={setPhoneNumber}
+            initialCountry="hr"
             style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
           />
     
@@ -119,5 +119,4 @@
         </View>
       );
     };
-    
     export default AddClubScreen;
