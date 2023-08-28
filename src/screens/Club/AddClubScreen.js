@@ -2,6 +2,9 @@
   import { View, Text, TextInput, Button, Alert } from 'react-native';
   import { collection, addDoc, updateDoc, doc} from 'firebase/firestore';
   import { FIRESTORE_INSTANCE, FIREBASE_AUTH, getListOfImages} from '../../firebase/FirebaseConfig';
+  import {
+    GooglePlacesAutocomplete,
+  } from 'react-native-google-places-autocomplete';
 
 
   const phoneNumberRegex = /^[0-9\s-]{9,10}$/;
@@ -79,12 +82,22 @@
           />
     
           <Text>Location:</Text>
-          <TextInput
-            value={location}
-            onChangeText={setLocation}
-            placeholder="Enter location"
-            style={{ borderWidth: 1, padding: 8, marginBottom: 16 }}
-          />
+          <GooglePlacesAutocomplete
+        placeholder="Enter location"
+        onPress={(data, details = null) => {
+          // 'details' is provided when fetchDetails = true
+          setLocation(details.formatted_address); // Set the selected location
+        }}
+        query={{
+          key: 'AIzaSyA7UNIGsCr4eTYd7EjivR_lwcKgPpFdPPw',
+          language: 'en',
+        }}
+        styles={{
+          textInput: { borderWidth: 1, padding: 8, marginBottom: 16 },
+        }}
+        // Set fetchDetails to get additional details such as formatted_address
+        fetchDetails
+      />
     
           <Text>Contact:</Text>
           <TextInput
