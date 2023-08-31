@@ -109,15 +109,14 @@
             value ={phoneNumber}
             onChangePhoneNumber={setPhoneNumber}
             initialCountry="hr"
-            style={styles.input}
-            textInputProps={{ placeholderTextColor: 'grey', }}
+            style={{...styles.input, backgroundColor: 'grey'}}
           />
 
           <Text style={styles.Text}>Working Hours:</Text>
           <TextInput
             value={workingHours}
             onChangeText={setWorkingHours}
-            placeholder="08:00 - 23:00"
+            placeholder="Example: 08:00 - 23:00"
             placeholderTextColor={StyleUtils.TEXT_COLOR}
             style={styles.input}
           />

@@ -94,7 +94,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="FirstScreen">
         {user ? (<Stack.Screen 
          name= "Inside" 
-         component={InsideLayout} 
+         component={UserLayout} 
          options={{ headerShown: false }} />
          ) : (
          <Stack.Screen 

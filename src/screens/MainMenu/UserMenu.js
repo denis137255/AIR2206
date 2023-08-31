@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   ImageBackground,
   FlatList,
+  TextInput
 } from 'react-native';
 
 import { FIREBASE_AUTH, FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
@@ -49,6 +50,9 @@ const UserMenu = ({ navigation }) => {
   const handleNavigateToAddClub = () => {
     navigation.navigate('AddClub');
   };
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredClubs, setFilteredClubs] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [clubs, setClubs] = useState([]);
@@ -101,6 +105,18 @@ const UserMenu = ({ navigation }) => {
     fetchClubs();
   };
 
+  const filterClubs = () => {
+    const filtered = clubs.filter(club =>
+      club.clubName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      club.location.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredClubs(filtered);
+  };
+  
+  useEffect(() => {
+    filterClubs();
+  }, [searchQuery, clubs]);
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -109,8 +125,17 @@ const UserMenu = ({ navigation }) => {
         </View>
       ) : (
         <>
+          <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search by club name or location"
+              placeholderTextColor={StyleUtils.TEXT_COLOR}
+              value={searchQuery}
+              onChangeText={text => setSearchQuery(text)}
+            />
+          </View>
           <FlatList
-            data={clubs}
+            data={filteredClubs}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
                 <ClubInfoContainer navigation={navigation} clubInfo={item} />
@@ -154,6 +179,31 @@ const styles = StyleSheet.create({
   loadingContainer: {
     ...CENTERED_CONTAINER,
     flex: 1,
+  },
+  searchContainer: {
+    width: '100%',
+    height: 48,
+    borderWidth: 1,
+    borderColor: StyleUtils.PRIMARY_COLOR,
+    marginBottom: StyleUtils.SPACING_SMALL,
+    marginTop: StyleUtils.SPACING_SMALL,
+    fontSize: StyleUtils.FONT_SIZE_MEDIUM,
+    fontFamily: StyleUtils.FONT_FAMILY_REGULAR,
+    borderRadius: StyleUtils.BORDER_RADIUS,
+    color: StyleUtils.TEXT_COLOR,
+    backgroundColor: 'transparent',
+  },
+  searchInput: {   
+    width: '100%',
+    height: 48,
+    borderColor: StyleUtils.PRIMARY_COLOR,
+    paddingHorizontal: StyleUtils.SPACING_MEDIUM,
+    marginBottom: StyleUtils.SPACING_MEDIUM,
+    fontSize: StyleUtils.FONT_SIZE_MEDIUM,
+    fontFamily: StyleUtils.FONT_FAMILY_REGULAR,
+    borderRadius: StyleUtils.BORDER_RADIUS,
+    color: StyleUtils.TEXT_COLOR,
+    backgroundColor: 'transparent',
   },
   clubContainer: {
     borderWidth: 2,
