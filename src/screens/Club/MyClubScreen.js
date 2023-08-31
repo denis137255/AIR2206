@@ -1,11 +1,9 @@
-import React from 'react';
-import { View, Text, Button, Alert, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, Alert, StyleSheet, FlatList, TouchableOpacity, ImageBackground, Dimensions, ScrollView } from 'react-native';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import StyleUtils, {
   FONT_SIZE_MEDIUM,
   FONT_FAMILY_BOLD,
-  TEXT_INPUT_STYLE,
-  BUTTON_CONTAINER,
-  BUTTON_WRAPPER,
   SPACING_MEDIUM,
   BORDER_RADIUS,
   SECONDARY_COLOR,
@@ -13,12 +11,13 @@ import StyleUtils, {
   TEXT_COLOR,
   SPACING_SMALL,
 } from '../../utils/StyleUtils';
-import { doc, deleteDoc} from 'firebase/firestore';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
-
+import Svg, { Circle, Path } from 'react-native-svg';
 
 const MyClubScreen = ({ route, navigation }) => {
   const { clubInfo } = route.params;
+  const [svgData, setSvgData] = useState('');
+  const [dots, setDots] = useState([]);
 
   // Sample data for events (replace with actual event data)
   const events = [
@@ -26,6 +25,29 @@ const MyClubScreen = ({ route, navigation }) => {
     { id: '2', name: 'Event 2' },
     // Add more events here
   ];
+
+  useEffect(() => {
+    const fetchFloorData = async () => {
+      try {
+        const floorDocRef = doc(FIRESTORE_INSTANCE, 'floor', clubInfo.clubId);
+        const floorDocSnapshot = await getDoc(floorDocRef);
+  
+        if (floorDocSnapshot.exists()) {
+          const floorDataFromFirebase = floorDocSnapshot.data();
+          setSvgData(floorDataFromFirebase.floorPlanData);
+          setDots(floorDataFromFirebase.dots);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchFloorData();
+  }, []);
+
+  // Adjust these values according to your SVG dimensions
+  const svgWidth = Dimensions.get('window').width * 0.95;
+  const svgHeight = Dimensions.get('window').height * 0.7; // Adjust the height as needed
 
   const navigateToEventInfo = (eventId) => {
     navigation.navigate('UserEventInfo', { eventId });
@@ -45,7 +67,7 @@ const MyClubScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
         <ImageBackground
           source={{ uri: clubInfo.clubImage }}
           style={styles.imageBackground}
@@ -85,6 +107,32 @@ const MyClubScreen = ({ route, navigation }) => {
         />
       </View>
 
+      <View style={styles.floorPlanContainer}>
+        <Svg
+          width={svgWidth}
+          height={svgHeight}
+          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+          style={styles.svg}
+        >
+          <Path
+            d={svgData}
+            fill="transparent"
+            stroke="white"
+            strokeWidth={5}
+          />
+
+          {dots.map((dot, index) => (
+            <Circle
+              key={index}
+              cx={dot.x}
+              cy={dot.y}
+              r={dot.radius}
+              fill={dot.color}
+            />
+          ))}
+        </Svg>
+      </View>
+
 
       {/* Add more fields for other club information */}
     <View style={StyleUtils.BUTTON_CONTAINER}>
@@ -106,7 +154,7 @@ const MyClubScreen = ({ route, navigation }) => {
         <Button title="Delete" onPress={handleDeleteClub} color="red" />
       </View>
     </View>
-  </View>
+  </ScrollView>
   );
 };
 
@@ -123,8 +171,9 @@ const styles = StyleSheet.create({
   },
   image: {
     resizeMode: 'crop',
-    opacity: 0.7,
-    resizeMode: 'cover'
+    opacity: 0.3,
+    resizeMode: 'cover',
+    borderRadius: 10,
   },
   clubDetails: {
     marginBottom: SPACING_MEDIUM,

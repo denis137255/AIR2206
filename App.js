@@ -48,24 +48,44 @@ function InsideLayout() {
     </InsideStack.Navigator>
   );
 }
+
+function UserStackNavigator() {
+  return (
+    <UserStack.Navigator>
+      <UserStack.Screen
+        name="UserMenu"
+        component={UserMenu}
+        options={{ headerShown: false }}
+      />
+      <UserStack.Screen
+        name="UserClubScreen"
+        component={UserClubScreen}
+        options={{ headerShown: false }}
+      />
+    </UserStack.Navigator>
+  );
+}
+
 function UserLayout() {
   return (
     <UserTab.Navigator
       screenOptions={{
-        tabBarLabelActiveTintColor: StyleUtils.PRIMARY_COLOR, // Set active icon color
-        tabBarInactiveTintColor: StyleUtils.TEXT_COLOR, // Set inactive icon color
-        tabBarStyle: [{
-          backgroundColor: StyleUtils.SECONDARY_COLOR,       
-        }]
+        tabBarLabelActiveTintColor: StyleUtils.PRIMARY_COLOR,
+        tabBarInactiveTintColor: StyleUtils.TEXT_COLOR,
+        tabBarStyle: [
+          {
+            backgroundColor: StyleUtils.SECONDARY_COLOR,
+          },
+        ],
       }}
     >
       <UserTab.Screen
         name="UserMenu"
-        component={UserMenu}
+        component={UserStackNavigator}
         options={{
-          tabBarLabel: 'Menu', // Tab label
+          tabBarLabel: 'Menu',
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="bars" size={20} color={color} /> // FontAwesome5 Menu icon
+            <FontAwesome5 name="bars" size={20} color={color} />
           ),
           headerShown: false,
         }}
@@ -81,10 +101,10 @@ function UserLayout() {
           headerShown: false,
         }}
       />
-      
     </UserTab.Navigator>
   );
 }
+
 //TODO Ispod treba napravit drugi layout za korisnika
 
 export default function App() {
@@ -129,7 +149,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="FirstScreen">
         {user ? (<Stack.Screen 
          name= "Inside" 
-         component={UserLayout} 
+         component={InsideLayout} 
          options={{ headerShown: false }} />
          ) : (
          <Stack.Screen 

@@ -1,69 +1,116 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Button, StyleSheet, Dimensions, Alert } from 'react-native';
 import { doc, setDoc } from 'firebase/firestore';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
 import { PRIMARY_COLOR, StyleUtils } from '../../utils/StyleUtils';
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, Path } from 'react-native-svg';
 
 const AddFloorScreen = ({ route, navigation }) => {
   const { clubId } = route.params;
   const [numDots, setNumDots] = useState(1);
   const [dots, setDots] = useState([]);
+  const [drawingMode, setDrawingMode] = useState(true);
+  const [pathData, setPathData] = useState('');
+  const [locked, setLocked] = useState(false);
+  const [drawingMarker, setDrawingMarker] = useState(null);
 
- useEffect(() => {
+  useEffect(() => {
     const maxTables = 36; // Maximum number of tables
     const evenlySpreadDots = [];
-    const screenWidth = Dimensions.get('window').width;
-    const screenHeight = Dimensions.get('window').height * 0.7;
-    const maxCols = 6;
-    const minGap = 20;
-
-    const numCols = Math.min(maxCols, Math.floor(screenWidth / (minGap * 2)));
-    const numRows = Math.ceil(numDots / numCols); // Calculate based on the number of dots and columns
-
-    const colWidth = (screenWidth - minGap * (numCols - 1)) / numCols;
-    const rowHeight = (screenHeight - minGap * (numRows - 1)) / numRows;
-
-    for (let row = 0; row < numRows; row++) {
-      for (let col = 0; col < numCols; col++) {
-        const x = col * (colWidth + minGap) + minGap;
-        const y = row * (rowHeight + minGap) + minGap;
-
-        if (evenlySpreadDots.length < numDots && evenlySpreadDots.length < maxTables) {
-          evenlySpreadDots.push({ x, y, radius: 8, color: 'blue', reserved:false });
-        }
-      }
-    }
-
+    // ... Rest of your code ...
     setDots(evenlySpreadDots);
   }, [numDots]);
 
-  const handleIncreaseDots = () => {
-    if (numDots < 36) { // Maximum number of tables is 36
-      setNumDots(prevValue => prevValue + 1);
+  const handleCanvasTouch = (event) => {
+    const { locationX, locationY } = event;
+
+    if (drawingMode) {
+      const point = `${locationX},${locationY}`;
+      const newPathData = pathData ? `${pathData} L${point}` : `M${point}`;
+      setPathData(newPathData);
+    } else if (locked) {
+      // Check if the tapped point is inside the shape or on an edge to mark the axis
+      if (drawingMarker) {
+        // Calculate the distance between the clicked point and the drawing marker
+        const distance = Math.sqrt(
+          Math.pow(locationX - drawingMarker.x, 2) +
+          Math.pow(locationY - drawingMarker.y, 2)
+        );
+
+        // Define a threshold to determine if the click is close enough to the drawing marker
+        const markerThreshold = 20;
+
+        if (distance <= markerThreshold) {
+          // Create a new table at the drawing marker's position
+          const newTable = {
+            x: drawingMarker.x,
+            y: drawingMarker.y,
+            radius: 8,
+            color: 'blue',
+            reserved: false,
+          };
+
+          setDots((prevDots) => [...prevDots, newTable]);
+        }
+      }
     }
   };
 
-  const handleDecreaseDots = () => {
-    if (numDots > 1) {
-      setNumDots(prevValue => prevValue - 1);
+  const handleToggleMode = () => {
+    if (drawingMode) {
+      setLocked(true);
+      setDrawingMode(false);
+      if (pathData === '') {
+        // Drawing is not completed, alert the user and switch back to drawing mode
+        Alert.alert('Incomplete Drawing', 'Please complete the drawing before proceeding.');
+        setLocked(false);
+        setDrawingMode(true);
+      }
     }
   };
+
+  const handleMarkerPress = (event) => {
+    if (locked) {
+      const { locationX, locationY } = event;
+      setDrawingMarker({ x: locationX, y: locationY });
+    }
+  };
+
+  const handleResetDrawing = () => {
+    if (!locked) {
+      setPathData('');
+      setDots([]);
+      setDrawingMarker(null);
+    }
+  };
+
   const handleConfirm = async () => {
+    if (!locked) {
+      Alert.alert('Incomplete Drawing', 'Please complete the drawing and lock the canvas before confirming.');
+      return;
+    }
+
     try {
+      // Save the drawing data to Firebase
       const floorData = {
         clubId: clubId,
         dots: dots,
+        floorPlanData: pathData, // Include the generated floor plan data
       };
 
       const floorDocRef = doc(FIRESTORE_INSTANCE, 'floor', clubId);
       await setDoc(floorDocRef, floorData);
 
-      console.log('Floor data saved to Firebase for club with ID: ', clubId);
+      // Provide user feedback
+      Alert.alert('Success', 'Drawing confirmed and saved successfully.');
+
+      // Navigate to the menu screen
+      navigation.navigate('Menu');
     } catch (error) {
-      console.error('Error saving floor data: ', error);
+      console.error('Error during confirmation: ', error);
+      // Handle the error here, show an alert or perform other error handling actions
+      Alert.alert('Error', 'An error occurred during confirmation. Please try again.');
     }
-    navigation.navigate('Menu');
   };
 
   const screenWidth = Dimensions.get('window').width * 0.95;
@@ -74,13 +121,44 @@ const AddFloorScreen = ({ route, navigation }) => {
       <Text style={styles.title}>Add Floor Plan</Text>
 
       <View style={styles.selectionContainer}>
-        <Button title="-" color={PRIMARY_COLOR} onPress={handleDecreaseDots} />
         <Text style={styles.numDots}>{numDots}</Text>
-        <Button title="+" color={PRIMARY_COLOR} onPress={handleIncreaseDots} />
       </View>
 
-      <View style={[styles.canvasContainer, { width: screenWidth, height: screenHeight }]}>
+      <View
+        style={[styles.canvasContainer, { width: screenWidth, height: screenHeight }]}
+        onTouchStart={(e) => handleCanvasTouch(e.nativeEvent)}
+        onTouchMove={(e) => handleMarkerPress(e.nativeEvent)}
+      >
         <Svg style={styles.canvas}>
+          {/* Render the drawing */}
+          <Path
+            d={pathData}
+            fill="transparent"
+            stroke={locked ? 'yellow' : 'red'}
+            strokeWidth={2}
+          />
+
+          {/* Render the drawing marker */}
+          {drawingMarker && (
+            <Circle
+              cx={drawingMarker.x}
+              cy={drawingMarker.y}
+              r={12}
+              fill="yellow"
+            />
+          )}
+
+          {/* Render locked shape */}
+          {locked && (
+            <Path
+              d={pathData}
+              fill="transparent"
+              stroke="white"
+              strokeWidth={2}
+            />
+          )}
+
+          {/* Render dots (tables) */}
           {dots.map((dot, index) => (
             <Circle
               key={index}
@@ -96,9 +174,25 @@ const AddFloorScreen = ({ route, navigation }) => {
       <View style={StyleUtils.BUTTON_CONTAINER}>
         <View style={StyleUtils.BUTTON_WRAPPER}>
           <Button
+            title={locked ? 'Locked' : 'Lock'}
+            onPress={handleToggleMode}
+            color={StyleUtils.PRIMARY_COLOR}
+            disabled={locked}
+          />
+        </View>
+        <View style={StyleUtils.BUTTON_WRAPPER}>
+          <Button
+            title="Reset Drawing"
+            onPress={handleResetDrawing}
+            color={StyleUtils.PRIMARY_COLOR}
+          />
+        </View>
+        <View style={StyleUtils.BUTTON_WRAPPER}>
+          <Button
             title="Confirm"
             onPress={handleConfirm}
             color={StyleUtils.PRIMARY_COLOR}
+            disabled={!locked}
           />
         </View>
       </View>
