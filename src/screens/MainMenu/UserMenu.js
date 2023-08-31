@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   ImageBackground,
   FlatList,
-  TextInput
+  TextInput,
 } from 'react-native';
 
 import { FIREBASE_AUTH, FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
@@ -141,29 +141,6 @@ const UserMenu = ({ navigation }) => {
                 <ClubInfoContainer navigation={navigation} clubInfo={item} />
                 )}
               />
-          <View style={BUTTON_CONTAINER}>
-            <View style={BUTTON_WRAPPER}>
-              <Button
-                onPress={() => FIREBASE_AUTH.signOut()}
-                title="Logout"
-                color={StyleUtils.PRIMARY_COLOR}
-              />
-            </View>
-            <View style={BUTTON_WRAPPER}>
-              <Button
-                onPress={handleNavigateToAddClub}
-                title="Add Club"
-                color={StyleUtils.PRIMARY_COLOR}
-              />
-            </View>
-            <View style={BUTTON_WRAPPER}>
-              <Button
-                onPress={handleRefresh}
-                title="Refresh"
-                color={StyleUtils.PRIMARY_COLOR}
-              />
-            </View>
-          </View>
         </>
       )}
     </View>

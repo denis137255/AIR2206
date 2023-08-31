@@ -47,14 +47,16 @@ export const BUTTON_CONTAINER = {
   height: '15%',
   alignContent: 'center',
   justifyContent: 'center',
-  marginTop: SPACING_MEDIUM,
+  marginTop: SPACING_MEDIUM, // Adjust this value as needed
   width: '100%',
-  padding: SPACING_MEDIUM
+  padding: SPACING_LARGE,
 };
 
 export const BUTTON_WRAPPER = {
   flex: 1,
   marginHorizontal: SPACING_MEDIUM,
+  marginTop: SPACING_MEDIUM, // Adjust this value as needed
+
 };
 
 // Other styles

@@ -1,11 +1,17 @@
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+
 import FirstScreen from './src/screens/Auth/FirstScreen'
 
 import * as Font from 'expo-font'; // Import the Font module
+import StyleUtils from './src/utils/StyleUtils';
+import { FontAwesome5 } from '@expo/vector-icons'; // Import FontAwesome5 icons
+
 
 import UserMenu from './src/screens/MainMenu/UserMenu';
+import UserSettings from './src/screens/Settings/UserSettings';
 import UserClubScreen from './src/screens/Club/UserClubScreen';
 
 import Menu from './src/screens/MainMenu/Menu';
@@ -22,6 +28,9 @@ const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
 
 const UserStack = createNativeStackNavigator();
+const UserTab = createBottomTabNavigator();
+
+
 
 
 //TODO Treba odvojen screen za ovu navigaciju napraviti
@@ -41,13 +50,39 @@ function InsideLayout() {
 }
 function UserLayout() {
   return (
-    <InsideStack.Navigator>
-      <InsideStack.Screen name="UserMenu" component={UserMenu} options={{ headerShown: false }}  />
-      <InsideStack.Screen name="AddClub" component={AddClubScreen} options={{ headerShown: false }} />
-      <InsideStack.Screen name="AddFloor" component={AddFloorScreen} options={{ headerShown: false }}/>
-      <InsideStack.Screen name="UserClubScreen" component={UserClubScreen} options={{ headerShown: false }} />
-      <InsideStack.Screen name="EditClub" component={EditClubScreen} options={{ headerShown: false }} />
-    </InsideStack.Navigator>
+    <UserTab.Navigator
+      screenOptions={{
+        tabBarLabelActiveTintColor: StyleUtils.PRIMARY_COLOR, // Set active icon color
+        tabBarInactiveTintColor: StyleUtils.TEXT_COLOR, // Set inactive icon color
+        tabBarStyle: [{
+          backgroundColor: StyleUtils.SECONDARY_COLOR,       
+        }]
+      }}
+    >
+      <UserTab.Screen
+        name="UserMenu"
+        component={UserMenu}
+        options={{
+          tabBarLabel: 'Menu', // Tab label
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="bars" size={20} color={color} /> // FontAwesome5 Menu icon
+          ),
+          headerShown: false,
+        }}
+      />
+      <UserTab.Screen
+        name="UserSettings"
+        component={UserSettings}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color }) => (
+            <FontAwesome5 name="user" size={20} color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+      
+    </UserTab.Navigator>
   );
 }
 //TODO Ispod treba napravit drugi layout za korisnika
