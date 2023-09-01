@@ -11,6 +11,7 @@ import StyleUtils, {
   TEXT_COLOR,
   SPACING_SMALL,
   getStatusBarHeight,
+  SPACING_LARGE,
 } from '../../utils/StyleUtils';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
 import Svg, { Circle, Path } from 'react-native-svg';
@@ -91,21 +92,18 @@ const MyClubScreen = ({ route, navigation }) => {
 
       <View style={styles.eventsContainer}>
         <Text style={styles.eventsHeading}>Events:</Text>
-        <FlatList
-          data={events}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.eventItem}
-              onPress={() => navigateToEventInfo(item.id)}
-            >
+        {events.map((item) => (
+          <TouchableOpacity
+            key={item.id}
+            style={styles.eventItem}
+            onPress={() => navigateToEventInfo(item.id)}
+          >
             <View style={styles.infoRow}>
-              <Text style={{color:'white'}}>{item.name}</Text>
-              <Text style={{color:'white'}}> Date </Text>
+              <Text style={{ color: 'white' }}>{item.name}</Text>
+              <Text style={{ color: 'white' }}> Date </Text>
             </View>
-            </TouchableOpacity>
-          )}
-        />
+          </TouchableOpacity>
+        ))}
       </View>
 
       <View style={styles.floorPlanContainer}>
@@ -164,6 +162,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: SECONDARY_COLOR,
     marginTop: getStatusBarHeight(),
+  },
+  floorPlanContainer: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: PRIMARY_COLOR,
+    borderRadius: BORDER_RADIUS,
+    marginBottom: SPACING_MEDIUM,
   },
   imageBackground: {
     flex: 1,

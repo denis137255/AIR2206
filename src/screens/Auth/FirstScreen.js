@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import StyleUtils, { SPACING_MEDIUM } from '../../utils/StyleUtils';
 import LoginForm from './Login/LoginForm';
 import RegistrationForm from './Registration/RegistrationForm';
-import { Picker } from '@react-native-picker/picker';
 
 
 const LoginScreen = () => {

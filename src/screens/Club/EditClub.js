@@ -1,25 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { collection, addDoc, updateDoc, doc} from 'firebase/firestore';
+import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { updateDoc, doc } from 'firebase/firestore';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
-import { StyleUtils } from '../../utils/StyleUtils'; // Import StyleUtils
-
-//TODO - Prava lokacija, data validation
-//TODO - Refresh nakon Edit
+import { StyleUtils, TEXT_COLOR } from '../../utils/StyleUtils';
+import PhoneInput from 'react-native-phone-input';
+import {
+  GooglePlacesAutocomplete,
+} from 'react-native-google-places-autocomplete';
 
 const EditClubScreen = ({ route, navigation }) => {
   const { clubInfo } = route.params;
-  const [editedClubInfo, setEditedClubInfo] = useState({ ...clubInfo });
+  const [editedClubData, setEditedClubData] = useState({ ...clubInfo });
 
   const handleSaveChanges = async () => {
+    // Add your validation logic here if needed
+
     try {
       const clubDocRef = doc(FIRESTORE_INSTANCE, 'clubs', clubInfo.id);
-      await updateDoc(clubDocRef, editedClubInfo);
+      await updateDoc(clubDocRef, editedClubData);
 
       // Success, navigate back to the MyClub screen
       navigation.goBack();
     } catch (error) {
       console.error('Error updating club:', error);
+      Alert.alert('Error', 'An error occurred while updating the club');
     }
   };
 
@@ -27,29 +31,44 @@ const EditClubScreen = ({ route, navigation }) => {
     <View style={styles.container}>
       <Text style={styles.label}>Club Name:</Text>
       <TextInput
-        value={editedClubInfo.clubName}
-        onChangeText={(value) => setEditedClubInfo({ ...editedClubInfo, clubName: value })}
+        value={editedClubData.clubName}
+        onChangeText={(value) => setEditedClubData({ ...editedClubData, clubName: value })}
         style={styles.input}
       />
 
       <Text style={styles.label}>Location:</Text>
-      <TextInput
-        value={editedClubInfo.location}
-        onChangeText={(value) => setEditedClubInfo({ ...editedClubInfo, location: value })}
-        style={styles.input}
+      <GooglePlacesAutocomplete
+        value={editedClubData.location}
+        placeholder="Enter location"
+        onPress={(data, details = null) => {
+          // 'details' is provided when fetchDetails = true
+          setEditedClubData({ ...editedClubData, location: details.formatted_address });
+        }}
+        query={{
+          key: 'AIzaSyA7UNIGsCr4eTYd7EjivR_lwcKgPpFdPPw', // Replace with your Google API Key
+          language: 'en',
+        }}
+        styles={{container: styles.borderInput, textInputContainer: styles.locationInput1, textInput: styles.locationInput2}}
+        textInputProps={{
+          placeholderTextColor: TEXT_COLOR,
+        }}
+        fetchDetails
       />
 
       <Text style={styles.label}>Contact:</Text>
-      <TextInput
-        value={editedClubInfo.contact}
-        onChangeText={(value) => setEditedClubInfo({ ...editedClubInfo, contact: value })}
-        style={styles.input}
+      <PhoneInput
+        value={editedClubData.contact}
+        onChangePhoneNumber={(value) => setEditedClubData({ ...editedClubData, contact: value })}
+        initialCountry="hr"
+        style={styles.phoneInput}
       />
 
       <Text style={styles.label}>Working Hours:</Text>
       <TextInput
-        value={editedClubInfo.workingHours}
-        onChangeText={(value) => setEditedClubInfo({ ...editedClubInfo, workingHours: value })}
+        value={editedClubData.workingHours}
+        onChangeText={(value) => setEditedClubData({ ...editedClubData, workingHours: value })}
+        placeholder="Example: 08:00 - 23:00"
+        placeholderTextColor={TEXT_COLOR}
         style={styles.input}
       />
 
@@ -57,7 +76,7 @@ const EditClubScreen = ({ route, navigation }) => {
         <Button
           title="Save Changes"
           onPress={handleSaveChanges}
-          color={StyleUtils.PRIMARY_COLOR} // Use primary color from StyleUtils
+          color={StyleUtils.PRIMARY_COLOR}
         />
       </View>
     </View>
@@ -66,15 +85,16 @@ const EditClubScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleUtils.CENTERED_CONTAINER, // Apply centered container style
-    padding: StyleUtils.SPACING_MEDIUM, // Use SPACING_LARGE from StyleUtils
+    ...StyleUtils.CENTERED_CONTAINER,
+    padding: StyleUtils.SPACING_MEDIUM,
+    backgroundColor: StyleUtils.SECONDARY_COLOR,
   },
   label: {
-    fontSize: StyleUtils.FONT_SIZE_MEDIUM, // Use FONT_SIZE_MEDIUM from StyleUtils
+    fontSize: StyleUtils.FONT_SIZE_MEDIUM,
     fontWeight: 'bold',
-    marginBottom: StyleUtils.SPACING_SMALL, // Use SPACING_SMALL from StyleUtils
-    color: StyleUtils.TEXT_COLOR, // Use TEXT_COLOR from StyleUtils
-    alignSelf: 'baseline'
+    marginBottom: StyleUtils.SPACING_SMALL,
+    color: StyleUtils.TEXT_COLOR,
+    alignSelf: 'baseline',
   },
   input: {
     width: '100%',
@@ -89,8 +109,45 @@ const styles = StyleSheet.create({
     color: StyleUtils.TEXT_COLOR,
     backgroundColor: 'transparent',
   },
+  locationInput1:{
+    fontSize: StyleUtils.FONT_SIZE_MEDIUM,
+    fontFamily: StyleUtils.FONT_FAMILY_REGULAR,
+    borderRadius: StyleUtils.BORDER_RADIUS,
+    color: StyleUtils.TEXT_COLOR,
+    backgroundColor: 'transparent',
+    zIndex: 2,
+  },
+  locationInput2:{
+      height: 48,
+      borderWidth: 1,
+      borderColor: StyleUtils.PRIMARY_COLOR,
+      marginBottom: StyleUtils.SPACING_MEDIUM,
+      fontSize: StyleUtils.FONT_SIZE_MEDIUM,
+      fontFamily: StyleUtils.FONT_FAMILY_REGULAR,
+      borderRadius: StyleUtils.BORDER_RADIUS,
+      color: StyleUtils.TEXT_COLOR,
+      backgroundColor: 'transparent',
+  },
+  borderInput: {
+    width: '100%',
+    zIndex: 2,
+    position: 'relative',
+  },
+  phoneInput: {
+    width: '100%',
+    height: 48,
+    borderWidth: 1,
+    borderColor: StyleUtils.PRIMARY_COLOR,
+    paddingHorizontal: StyleUtils.SPACING_MEDIUM,
+    marginBottom: StyleUtils.SPACING_MEDIUM,
+    fontSize: StyleUtils.FONT_SIZE_MEDIUM,
+    fontFamily: StyleUtils.FONT_FAMILY_REGULAR,
+    borderRadius: StyleUtils.BORDER_RADIUS,
+    color: StyleUtils.TEXT_COLOR,
+    backgroundColor: 'grey',
+  },
   buttonContainer: {
-    ...StyleUtils.BUTTON_CONTAINER, // Apply BUTTON_CONTAINER from StyleUtils
+    ...StyleUtils.BUTTON_CONTAINER,
   },
 });
 

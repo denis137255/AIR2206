@@ -56,7 +56,7 @@ export const BUTTON_CONTAINER = {
   height: '15%',
   alignContent: 'center',
   justifyContent: 'center',
-  marginTop: SPACING_MEDIUM, // Adjust this value as needed
+  paddingTop: SPACING_MEDIUM, // Adjust this value as needed
   width: '100%',
   padding: SPACING_LARGE,
 };
