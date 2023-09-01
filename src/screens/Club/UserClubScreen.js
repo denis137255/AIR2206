@@ -11,6 +11,7 @@ import StyleUtils, {
   SECONDARY_COLOR,
   PRIMARY_COLOR,
   TEXT_COLOR,
+  getStatusBarHeight
 } from '../../utils/StyleUtils';
 
 const UserClubScreen = ({ route, navigation }) => {
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: SECONDARY_COLOR,
-    marginTop: 20,
+    marginTop: getStatusBarHeight(),
   },
   imageBackground: {
     flex: 1,

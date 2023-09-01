@@ -1,4 +1,4 @@
-import { Dimensions, PixelRatio } from 'react-native';
+import { Dimensions, PixelRatio, StatusBar, Platform } from 'react-native';
 
 // Calculate responsive font size based on device width
 const responsiveFontSize = (fontSize) => {
@@ -7,6 +7,15 @@ const responsiveFontSize = (fontSize) => {
   const scaleFactor = screenWidth / designWidth;
   const adjustedFontSize = fontSize * scaleFactor;
   return PixelRatio.roundToNearestPixel(adjustedFontSize);
+};
+
+export const getStatusBarHeight = () => {
+  if (Platform.OS === 'android') {
+    return StatusBar.currentHeight || 0;
+  } else {
+    // On iOS, there's no need to account for the status bar height
+    return 0;
+  }
 };
 
 // Font sizes
@@ -70,7 +79,7 @@ export const CENTERED_CONTAINER = {
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: 20,
+  marginTop: getStatusBarHeight(),
   backgroundColor: SECONDARY_COLOR,
 };
 

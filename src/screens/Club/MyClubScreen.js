@@ -10,6 +10,7 @@ import StyleUtils, {
   PRIMARY_COLOR,
   TEXT_COLOR,
   SPACING_SMALL,
+  getStatusBarHeight,
 } from '../../utils/StyleUtils';
 import { FIRESTORE_INSTANCE } from '../../firebase/FirebaseConfig';
 import Svg, { Circle, Path } from 'react-native-svg';
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: SECONDARY_COLOR,
-    marginTop: 20,
+    marginTop: getStatusBarHeight(),
   },
   imageBackground: {
     flex: 1,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { FIREBASE_AUTH } from '../../firebase/FirebaseConfig'; // Import your Firebase configuration
-import StyleUtils from '../../utils/StyleUtils';
+import StyleUtils, {getStatusBarHeight} from '../../utils/StyleUtils';
 
 const UserSettings = ({ navigation }) => {
   const handleLogout = async () => {
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: StyleUtils.SPACING_MEDIUM,
     backgroundColor: StyleUtils.SECONDARY_COLOR,
+    marginTop: getStatusBarHeight(),
   },
   label: {
     fontSize: StyleUtils.FONT_SIZE_MEDIUM,

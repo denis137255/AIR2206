@@ -152,7 +152,6 @@ const Menu = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     ...CENTERED_CONTAINER,
-    paddingTop: 5,
     flex: 1,
   },
   loadingContainer: {
