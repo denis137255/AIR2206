@@ -43,13 +43,6 @@ const UserClubScreen = ({ route, navigation }) => {
         </View>
         </ImageBackground>
 
-      {/* Google Maps Placeholder */}
-      <View style={styles.mapsContainer}>
-        <View style={styles.mapsBorder}>
-          <Text style={styles.mapsPlaceholderText}>Google Maps Placeholder</Text>
-        </View>
-      </View>
-
       <View style={styles.eventsContainer}>
         <Text style={styles.eventsHeading}>Events:</Text>
         <FlatList

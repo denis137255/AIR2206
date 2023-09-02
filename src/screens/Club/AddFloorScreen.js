@@ -31,16 +31,6 @@ const AddFloorScreen = ({ route, navigation }) => {
     } else if (locked) {
       // Check if the tapped point is inside the shape or on an edge to mark the axis
       if (drawingMarker) {
-        // Calculate the distance between the clicked point and the drawing marker
-        const distance = Math.sqrt(
-          Math.pow(locationX - drawingMarker.x, 2) +
-          Math.pow(locationY - drawingMarker.y, 2)
-        );
-
-        // Define a threshold to determine if the click is close enough to the drawing marker
-        const markerThreshold = 20;
-
-        if (distance <= markerThreshold) {
           // Create a new table at the drawing marker's position
           const newTable = {
             x: drawingMarker.x,
@@ -52,7 +42,6 @@ const AddFloorScreen = ({ route, navigation }) => {
 
           setDots((prevDots) => [...prevDots, newTable]);
         }
-      }
     }
   };
 
@@ -77,11 +66,12 @@ const AddFloorScreen = ({ route, navigation }) => {
   };
 
   const handleResetDrawing = () => {
-    if (!locked) {
       setPathData('');
       setDots([]);
       setDrawingMarker(null);
-    }
+      setLocked(false);
+      setDrawingMode(true);
+
   };
 
   const handleConfirm = async () => {
@@ -121,7 +111,7 @@ const AddFloorScreen = ({ route, navigation }) => {
       <Text style={styles.title}>Add Floor Plan</Text>
 
       <View style={styles.selectionContainer}>
-        <Text style={styles.numDots}>{numDots}</Text>
+        <Text style={styles.numDots}>NUM OF TABLES COUNTER</Text>
       </View>
 
       <View

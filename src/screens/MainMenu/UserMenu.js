@@ -47,9 +47,6 @@ const ClubInfoContainer = ({ navigation, clubInfo }) => {
 };
 
 const UserMenu = ({ navigation }) => {
-  const handleNavigateToAddClub = () => {
-    navigation.navigate('AddClub');
-  };
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredClubs, setFilteredClubs] = useState([]);
@@ -90,20 +87,10 @@ const UserMenu = ({ navigation }) => {
     // Fetch clubs when the component mounts
     fetchClubs();
 
-    // Add listener to fetch clubs when screen is focused
-    const focusListener = navigation.addListener('focus', () => {
-      fetchClubs();
-    });
-
     return () => {
       unsubscribe();
-      focusListener(); // Remove the focus listener when the component unmounts
-    };
+        };
   }, [navigation]);
-
-  const handleRefresh = () => {
-    fetchClubs();
-  };
 
   const filterClubs = () => {
     const filtered = clubs.filter(club =>
