@@ -53,12 +53,11 @@ export const TEXT_INPUT_STYLE = {
 
 export const BUTTON_CONTAINER = {
   flexDirection: 'column',
-  height: '15%',
+  height: '10%',
   alignContent: 'center',
   justifyContent: 'center',
-  paddingTop: SPACING_MEDIUM, // Adjust this value as needed
   width: '100%',
-  padding: SPACING_LARGE,
+  padding: SPACING_MEDIUM,
 };
 
 export const BUTTON_WRAPPER = {

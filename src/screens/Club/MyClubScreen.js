@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, Alert, StyleSheet, FlatList, TouchableOpacity, ImageBackground, Dimensions, ScrollView } from 'react-native';
+import { View, Text, Button, Alert, StyleSheet, FlatList, TouchableOpacity, ImageBackground, Dimensions, ScrollView} from 'react-native';
 import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import StyleUtils, {
   FONT_SIZE_MEDIUM,
@@ -60,6 +60,8 @@ const MyClubScreen = ({ route, navigation }) => {
     try {
       const clubDocRef = doc(FIRESTORE_INSTANCE, 'clubs', clubInfo.id);
       await deleteDoc(clubDocRef);
+      const floorDocRef = doc(FIRESTORE_INSTANCE, 'floor', clubInfo.id);
+      await deleteDoc(floorDocRef);
       Alert.alert('Success', 'Club deleted successfully');
       navigation.goBack(); // Go back to the previous screen
     } catch (error) {
@@ -91,7 +93,6 @@ const MyClubScreen = ({ route, navigation }) => {
           <TouchableOpacity
             key={item.id}
             style={styles.eventItem}
-            onPress={() => navigateToEventInfo(item.id)}
           >
             <View style={styles.infoRow}>
               <Text style={{ color: 'white' }}>{item.name}</Text>
@@ -110,7 +111,7 @@ const MyClubScreen = ({ route, navigation }) => {
         >
           <Path
             d={svgData}
-            fill="transparent"
+            fill="#36454F"
             stroke="white"
             strokeWidth={5}
           />

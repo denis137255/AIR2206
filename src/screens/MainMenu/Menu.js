@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  ScrollView,
   ImageBackground,
   FlatList
 } from 'react-native';
@@ -101,10 +100,6 @@ const Menu = ({ navigation }) => {
     };
   }, [navigation]);
 
-  const handleRefresh = () => {
-    fetchClubs();
-  };
-
   return (
     <View style={styles.container}>
       {loading ? (
@@ -132,13 +127,6 @@ const Menu = ({ navigation }) => {
               <Button
                 onPress={handleNavigateToAddClub}
                 title="Add Club"
-                color={StyleUtils.PRIMARY_COLOR}
-              />
-            </View>
-            <View style={BUTTON_WRAPPER}>
-              <Button
-                onPress={handleRefresh}
-                title="Refresh"
                 color={StyleUtils.PRIMARY_COLOR}
               />
             </View>

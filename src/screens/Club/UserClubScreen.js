@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground} from 'react-native';
 import StyleUtils, {
   FONT_SIZE_MEDIUM,
   FONT_FAMILY_BOLD,
@@ -51,7 +51,6 @@ const UserClubScreen = ({ route, navigation }) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.eventItem}
-              onPress={() => navigateToEventInfo(item.id)}
             >
             <View style={styles.infoRow}>
               <Text style={{color:'white'}}>{item.name}</Text>
