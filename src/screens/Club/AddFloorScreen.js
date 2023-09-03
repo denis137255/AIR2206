@@ -7,19 +7,13 @@ import Svg, { Circle, Path } from 'react-native-svg';
 
 const AddFloorScreen = ({ route, navigation }) => {
   const { clubId } = route.params;
-  const [numDots, setNumDots] = useState(1);
+  const [numDots, setNumDots] = useState(0);
   const [dots, setDots] = useState([]);
   const [drawingMode, setDrawingMode] = useState(true);
   const [pathData, setPathData] = useState('');
   const [locked, setLocked] = useState(false);
   const [drawingMarker, setDrawingMarker] = useState(null);
 
-  useEffect(() => {
-    const maxTables = 36; // Maximum number of tables
-    const evenlySpreadDots = [];
-    // ... Rest of your code ...
-    setDots(evenlySpreadDots);
-  }, [numDots]);
 
   const handleCanvasTouch = (event) => {
     const { locationX, locationY } = event;
@@ -41,6 +35,7 @@ const AddFloorScreen = ({ route, navigation }) => {
           };
 
           setDots((prevDots) => [...prevDots, newTable]);
+          setNumDots((prevNumDots) => prevNumDots + 1);
         }
     }
   };
@@ -71,7 +66,7 @@ const AddFloorScreen = ({ route, navigation }) => {
       setDrawingMarker(null);
       setLocked(false);
       setDrawingMode(true);
-
+      setNumDots(null);
   };
 
   const handleConfirm = async () => {
@@ -111,7 +106,7 @@ const AddFloorScreen = ({ route, navigation }) => {
       <Text style={styles.title}>Add Floor Plan</Text>
 
       <View style={styles.selectionContainer}>
-        <Text style={styles.numDots}>NUM OF TABLES COUNTER</Text>
+      <Text style={styles.numDots}>Total Tables: {numDots}</Text>
       </View>
 
       <View
@@ -123,8 +118,9 @@ const AddFloorScreen = ({ route, navigation }) => {
           {/* Render the drawing */}
           <Path
             d={pathData}
-            fill="transparent"
-            stroke={locked ? 'yellow' : 'red'}
+            fill="#36454F"
+            fillRule='evenodd'
+            stroke='red'
             strokeWidth={2}
           />
 
@@ -134,7 +130,7 @@ const AddFloorScreen = ({ route, navigation }) => {
               cx={drawingMarker.x}
               cy={drawingMarker.y}
               r={12}
-              fill="yellow"
+              fill='blue'
             />
           )}
 
