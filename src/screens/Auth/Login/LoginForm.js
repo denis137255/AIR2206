@@ -4,7 +4,7 @@ import StyleUtils, { SPACING_MEDIUM, CENTERED_CONTAINER, BUTTON_CONTAINER, BUTTO
 import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { FIREBASE_AUTH } from '../../../firebase/FirebaseConfig';
 
-const LoginForm = ({ onBack }) => {
+const LoginForm = ({ onBack, navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -13,13 +13,8 @@ const LoginForm = ({ onBack }) => {
   const signIn = async () => {
     setLoading(true);
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response);
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          navigation.navigate('Inside');
-        }
-      });
+      signInWithEmailAndPassword(auth, email, password);
+    
     } catch (error) {
       console.log(error);
       alert('Sign in failed: ' + error.message);

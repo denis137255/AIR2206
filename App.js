@@ -21,7 +21,8 @@ import MyClubScreen from './src/screens/Club/MyClubScreen';
 import EditClubScreen from './src/screens/Club/EditClub';
 
 import {User, onAuthStateChanged} from 'firebase/auth';
-import { FIREBASE_AUTH } from './src/firebase/FirebaseConfig';
+import {doc, getDoc} from 'firebase/firestore';
+import { FIREBASE_AUTH, FIRESTORE_INSTANCE } from './src/firebase/FirebaseConfig';
 
 const Stack = createNativeStackNavigator();
 
@@ -110,6 +111,8 @@ function UserLayout() {
 export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false); // State to store admin status
+
 
 
   //Provjeri font stanje - obrisano
@@ -129,11 +132,37 @@ export default function App() {
   }, []); 
 
   useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) =>{
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
       setUser(user);
-    })
-
-  })
+      console.log('User status', user);
+      if (user) {
+        console.log('USER EXISTS!');
+        const userDocRef = doc(FIRESTORE_INSTANCE, 'user', user.uid);
+        getDoc(userDocRef)
+          .then((docSnapshot) => {
+            if (docSnapshot.exists()) {
+              console.log('Snapshot does exist!');
+              const userData = docSnapshot.data();
+              const userIsAdmin = userData.admin;
+              setIsAdmin(userIsAdmin);
+              console.log('Admin check:', userIsAdmin);
+            } else {
+              setIsAdmin(false);
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching user data:', error);
+          });
+      } else {
+        setIsAdmin(false);
+      }
+    });
+  
+    // Return a cleanup function to unsubscribe when the component unmounts
+    return () => unsubscribe();
+  }, [FIREBASE_AUTH]); // Include FIREBASE_AUTH in the dependencies array
+  
+  
 
   if (!dataLoaded) {
     // Wait for fonts to be loaded before rendering the app
@@ -141,21 +170,27 @@ export default function App() {
   }
 
   return (
-
-    //Provjeri stanje prijave, pa ga posalje u app
-    //TODO Kasnije treba poslije provjere provjeriti tip korisnika i poslati ga u pravom smjeru
-
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="FirstScreen">
-        {user ? (<Stack.Screen 
-         name= "Inside" 
-         component={InsideLayout} 
-         options={{ headerShown: false }} />
-         ) : (
-         <Stack.Screen 
-         name= "FirstScreen" 
-         component={FirstScreen} 
-         options={{headerShown: false}}/>)}
+      <Stack.Navigator initialRouteName='FirstScreen'>
+        {user ? ( isAdmin ? (
+          <Stack.Screen
+            name="Inside"
+            component={InsideLayout}
+            options={{ headerShown: false }}
+          />
+        ):(
+            <Stack.Screen
+            name="User"
+            component={UserLayout}
+            options={{ headerShown: false }}
+          />
+          )):(
+          <Stack.Screen
+            name="FirstScreen"
+            component={FirstScreen}
+            options={{ headerShown: false }}
+          />
+          )}
       </Stack.Navigator>
     </NavigationContainer>
   );
