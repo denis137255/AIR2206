@@ -3,6 +3,9 @@ import { getFirestore} from 'firebase/firestore';
 import { getAuth} from 'firebase/auth';
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 
+//Android - 745815725341-td3j0jss8gu5qjm4bksduonlfjgd8mrs.apps.googleusercontent.com
+//Web - 873612396167-ohkcksb2scacoqgq85s1anl4h45ul9pi.apps.googleusercontent.com
+
 const firebaseConfig = {
     apiKey: "AIzaSyDe7LT6k3TZVENTEv3xkX08J0vfvNd5y_U",
     authDomain: "reservate-692c7.firebaseapp.com",
@@ -12,10 +15,12 @@ const firebaseConfig = {
     appId: "1:182175651099:web:233a844329302d67c36fbe",
     measurementId: "G-VEQDZXE4CV"
   };
+
   
   export const FIREBASE_APP = initializeApp(firebaseConfig);
   export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
   export const FIRESTORE_INSTANCE = getFirestore(FIREBASE_APP);
+  FIREBASE_AUTH.useDeviceLanguage();
 
   export const STORAGE_INIT = getStorage(FIREBASE_APP);
   export const FIREBASE_STORAGE = ref(STORAGE_INIT, 'clubs/');
@@ -31,5 +36,7 @@ const firebaseConfig = {
   
     return Promise.all(imagePromises);
   };
+
+
   
   

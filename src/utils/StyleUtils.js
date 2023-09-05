@@ -1,6 +1,5 @@
 import { Dimensions, PixelRatio, StatusBar, Platform } from 'react-native';
 
-// Calculate responsive font size based on device width
 const responsiveFontSize = (fontSize) => {
   const { width: screenWidth } = Dimensions.get('window');
   const designWidth = 375; // Width of the design mockup
@@ -18,24 +17,17 @@ export const getStatusBarHeight = () => {
   }
 };
 
-// Font sizes
 export const FONT_SIZE_SMALL = responsiveFontSize(14);
 export const FONT_SIZE_MEDIUM = responsiveFontSize(16);
 export const FONT_SIZE_LARGE = responsiveFontSize(18);
 
-// Font families
 export const FONT_FAMILY_REGULAR = 'Roboto-Regular';
 export const FONT_FAMILY_BOLD = 'Roboto-Bold';
 export const FONT_FAMILY_ITALIC = 'Roboto-Italic';
 
-// Common colors
 export const PRIMARY_COLOR = '#FFC107'; // A variant of yellow
 export const SECONDARY_COLOR = '#121212'; // A variant of black
 export const TEXT_COLOR = 'white';
-
-// Button style
-
-// Text input style
 
 export const TEXT_INPUT_STYLE = {
   width: '100%',
@@ -63,17 +55,14 @@ export const BUTTON_CONTAINER = {
 export const BUTTON_WRAPPER = {
   flex: 1,
   marginHorizontal: SPACING_MEDIUM,
-  marginTop: SPACING_MEDIUM, // Adjust this value as needed
-
+  marginTop: SPACING_MEDIUM,
 };
 
-// Other styles
 export const BORDER_RADIUS = 8;
 export const SPACING_SMALL = 8;
 export const SPACING_MEDIUM = 16;
 export const SPACING_LARGE = 24;
 
-// Centered container style
 export const CENTERED_CONTAINER = {
   flex: 1,
   justifyContent: 'center',
@@ -82,7 +71,6 @@ export const CENTERED_CONTAINER = {
   backgroundColor: SECONDARY_COLOR,
 };
 
-// Export the complete object as well
 export const StyleUtils = {
   responsiveFontSize,
   FONT_SIZE_SMALL,
@@ -99,8 +87,6 @@ export const StyleUtils = {
   SPACING_MEDIUM,
   SPACING_LARGE,
   CENTERED_CONTAINER,
-   // Add the centered container style
-  // Export more styles as needed
 };
 
 export default StyleUtils;

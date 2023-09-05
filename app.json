@@ -2,6 +2,7 @@
   "expo": {
     "name": "Reservate",
     "slug": "Reservate",
+    "scheme": "Reservate",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,16 +16,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.denis255.Reservate"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.denis255.Reservate"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a161b6ac-ca94-44bf-b104-2b7d2b8dfd5c"
+      }
     }
   }
 }

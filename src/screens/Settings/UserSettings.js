@@ -15,7 +15,7 @@ const UserSettings = ({ navigation }) => {
   };
 
   const user = FIREBASE_AUTH.currentUser;
-  const email = user ? user.email : 'N/A'; // Get user's email or set to 'N/A'
+  const email = user ? user.email : 'GUEST ACCOUNT'; // Get user's email or set to 'N/A'
   const creationTime = user ? user.metadata.creationTime : 'N/A'; // Get creation time or set to 'N/A'
 
   return (

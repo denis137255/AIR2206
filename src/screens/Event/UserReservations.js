@@ -1,1 +1,0 @@
-//todo cijeli dizajn za listu njegovih true rezervacija 
