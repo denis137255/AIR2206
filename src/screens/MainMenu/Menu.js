@@ -150,12 +150,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: PRIMARY_COLOR,
     backgroundColor: SECONDARY_COLOR,
-    marginBottom: 10, // Adjust the marginBottom to control spacing between clubs
+    marginBottom: 10,
     borderRadius: 5,
     alignSelf: 'center',
     minWidth: '100%',
-    height: 200, // Increase the height of each club container
-    justifyContent: 'center', // Center the content vertically
+    height: 200,
+    justifyContent: 'center',
   },
   clubList: {
     backgroundColor: SECONDARY_COLOR,

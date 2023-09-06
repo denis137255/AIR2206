@@ -43,6 +43,24 @@ export const TEXT_INPUT_STYLE = {
   backgroundColor: 'transparent',
 };
 
+export const INTRO_CONTAINER = {
+    marginTop: getStatusBarHeight(),
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: SECONDARY_COLOR,
+    width: '100%',
+}
+
+export const INTRO_BUTTON = {
+  height: 48,
+  alignContent: 'center',
+  justifyContent: 'center',
+  marginTop: SPACING_MEDIUM,
+  width: '50%',
+}
+
 export const BUTTON_CONTAINER = {
   flexDirection: 'column',
   height: '10%',

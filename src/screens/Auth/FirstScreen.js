@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, Button } from 'react-native';
-import StyleUtils, { SPACING_MEDIUM } from '../../utils/StyleUtils';
+import StyleUtils, { INTRO_BUTTON, INTRO_CONTAINER, SPACING_MEDIUM } from '../../utils/StyleUtils';
 import LoginForm from './Login/LoginForm';
 import RegistrationForm from './Registration/RegistrationForm';
 
@@ -15,15 +15,15 @@ const LoginScreen = () => {
         <Image source={require('../../../assets/new_logo.png')} style={styles.logo} />
       </View>
 
-      <View style={styles.buttonContainer}>
-        <View style={styles.buttonWrapper}>
+      <View style={INTRO_CONTAINER}>
+        <View style={INTRO_BUTTON}>
           <Button
             title="Sign In"
             onPress={() => setShowLoginForm(true)}
             color={StyleUtils.PRIMARY_COLOR}
           />
         </View>
-        <View style={styles.buttonWrapper}>
+        <View style={INTRO_BUTTON}>
           <Button
             title="Register"
             onPress={() => setShowRegistrationForm(true)}
@@ -57,21 +57,13 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: SPACING_MEDIUM,
   },
   logo: {
     width: 300,
     height: 300,
     resizeMode: 'contain',
   },
-  buttonContainer: {
-    flexDirection: 'column',
-    height: '15%',
-    alignContent: 'center',
-    justifyContent: 'center',
-    marginTop: SPACING_MEDIUM,
-    width: '50%',
-  },
+
   buttonWrapper: {
     flex: 1,
     marginHorizontal: StyleUtils.SPACING_MEDIUM,
