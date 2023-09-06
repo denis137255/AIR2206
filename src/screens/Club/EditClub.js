@@ -13,8 +13,6 @@ const EditClubScreen = ({ route, navigation }) => {
   const [editedClubData, setEditedClubData] = useState({ ...clubInfo });
 
   const handleSaveChanges = async () => {
-    // Add your validation logic here if needed
-
     try {
       const clubDocRef = doc(FIRESTORE_INSTANCE, 'clubs', clubInfo.id);
       await updateDoc(clubDocRef, editedClubData);

@@ -86,10 +86,8 @@ const Menu = ({ navigation }) => {
       }
     });
 
-    // Fetch clubs when the component mounts
     fetchClubs();
 
-    // Add listener to fetch clubs when screen is focused
     const focusListener = navigation.addListener('focus', () => {
       fetchClubs();
     });

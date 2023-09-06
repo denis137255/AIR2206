@@ -34,10 +34,6 @@ const UserTab = createBottomTabNavigator();
 
 
 
-//TODO Treba odvojen screen za ovu navigaciju napraviti
-//Obican user layout
-//Privremeno dodan AddClub, on ce ici u stack ispod
-
 function InsideLayout() {
   return (
     <InsideStack.Navigator>
@@ -81,7 +77,7 @@ function UserLayout() {
       }}
     >
       <UserTab.Screen
-        name="UserMenu"
+        name="UserMenuScreen"
         component={UserStackNavigator}
         options={{
           tabBarLabel: 'Menu',

@@ -7,16 +7,15 @@ const UserSettings = ({ navigation }) => {
   const handleLogout = async () => {
     try {
       await FIREBASE_AUTH.signOut();
-      // You can navigate to the login screen or any other screen after logging out
-      navigation.navigate('FirstScreen'); // Replace 'FirstScreen' with your screen name
+      navigation.navigate('FirstScreen');
     } catch (error) {
       console.error('Error logging out:', error);
     }
   };
 
   const user = FIREBASE_AUTH.currentUser;
-  const email = user ? user.email : 'GUEST ACCOUNT'; // Get user's email or set to 'N/A'
-  const creationTime = user ? user.metadata.creationTime : 'N/A'; // Get creation time or set to 'N/A'
+  const email = user ? user.email : 'GUEST ACCOUNT';
+  const creationTime = user ? user.metadata.creationTime : 'N/A'
 
   return (
     <View style={styles.container}>

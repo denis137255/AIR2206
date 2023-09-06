@@ -129,8 +129,8 @@
 
     const styles = StyleSheet.create({
       container: {
-        ...StyleUtils.CENTERED_CONTAINER, // Apply centered container style
-        padding: StyleUtils.SPACING_MEDIUM, // Use SPACING_LARGE from StyleUtils
+        ...StyleUtils.CENTERED_CONTAINER,
+        padding: StyleUtils.SPACING_MEDIUM,
         backgroundColor: SECONDARY_COLOR,
       },
       buttonContainer: {
@@ -176,10 +176,10 @@
       },
 
       Text: {
-        fontSize: StyleUtils.FONT_SIZE_MEDIUM, // Use FONT_SIZE_MEDIUM from StyleUtils
+        fontSize: StyleUtils.FONT_SIZE_MEDIUM,
         fontWeight: 'bold',
-        marginBottom: StyleUtils.SPACING_SMALL, // Use SPACING_SMALL from StyleUtils
-        color: StyleUtils.TEXT_COLOR, // Use TEXT_COLOR from StyleUtils
+        marginBottom: StyleUtils.SPACING_SMALL, 
+        color: StyleUtils.TEXT_COLOR,
         alignSelf: 'baseline'
       },
     })

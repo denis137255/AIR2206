@@ -3,11 +3,12 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import GoogleSignInComponent from './signInGoogle'; // Import your Google Sign-In component
 import EmailPasswordSignIn from './signInEmail';
 import AnonymousSignInButton from './AnonymusAuth';
-import { CENTERED_CONTAINER, INTRO_CONTAINER, SPACING_LARGE, TEXT_COLOR } from '../../../utils/StyleUtils';
+import { CENTERED_CONTAINER, TEXT_COLOR } from '../../../utils/StyleUtils';
 
 const LoginScreen = () => {
   return (      
       <View style={CENTERED_CONTAINER}>
+        
       <EmailPasswordSignIn />
       <GoogleSignInComponent/>
 
